@@ -18,7 +18,25 @@ UCLASS()
 class SNOWED_IN_API UHudWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	UHudWidget(const FObjectInitializer& ObjectInitializer);
+
+	virtual void NativeConstruct() override;
+
 private:
+	static const FString TIER1_TEXT;
+	static const FString TIER2_TEXT;
+	static const FString TIER3_TEXT;
+
+	static const uint32 TIER1_COST;
+	static const uint32 TIER2_COST;
+	static const uint32 TIER3_COST;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Game Manager", AllowPrivateAccess = "true"))
+	class UGameManager* GameManager = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageIceCrystals", BindWidget, AllowPrivateAccess = "true"))
 		TObjectPtr<UImage> ImageIceCrystals = nullptr;
 
