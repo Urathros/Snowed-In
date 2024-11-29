@@ -7,14 +7,14 @@
 /*****************************************************************************/
 // Game Manager
 /*****************************************************************************/
-// Get Is Paused
+// Get Paused
 /*****************************************************************************/
-const bool UCoreBlueprintFunctionLibrary::GetPaused(const UObject* _GameObject)
+const bool UCoreBlueprintFunctionLibrary::GetPaused(const UObject* a_GameObject)
 {
 	/*-----------------------------------------------------------------------*/
 	// nullptr exception
 	/*-----------------------------------------------------------------------*/
-	if (_GameObject == nullptr)
+	if (a_GameObject == nullptr)
 	{
 		UE_LOG(LogTemp, Error,
 			TEXT("Game Object of Get Paused was a Nullptr Exception."));
@@ -28,13 +28,13 @@ const bool UCoreBlueprintFunctionLibrary::GetPaused(const UObject* _GameObject)
 	/*-----------------------------------------------------------------------*/
 	// connect to GM
 	/*-----------------------------------------------------------------------*/
-	UGameManager* pGameManager = UGameManager::Instantiate(*_GameObject);
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
 	/*-----------------------------------------------------------------------*/
 
 
 
 	/*-----------------------------------------------------------------------*/
-	// Get IsPaused
+	// Get Pause
 	/*-----------------------------------------------------------------------*/
 	return pGameManager->GetPause();
 	/*-----------------------------------------------------------------------*/
@@ -44,15 +44,15 @@ const bool UCoreBlueprintFunctionLibrary::GetPaused(const UObject* _GameObject)
 
 
 /*****************************************************************************/
-// Set is Paused
+// Set Paused
 /*****************************************************************************/
-void UCoreBlueprintFunctionLibrary::SetPaused(const bool _IsPaused,
-	const UObject* _GameObject)
+void UCoreBlueprintFunctionLibrary::SetPaused(const bool a_bPause,
+	const UObject* a_GameObject)
 {
 	/*-----------------------------------------------------------------------*/
 	// nullptr exception
 	/*-----------------------------------------------------------------------*/
-	if (_GameObject == nullptr)
+	if (a_GameObject == nullptr)
 	{
 		UE_LOG(LogTemp, Error,
 			TEXT("Game Object of Set Paused was a Nullptr Exception."));
@@ -66,15 +66,213 @@ void UCoreBlueprintFunctionLibrary::SetPaused(const bool _IsPaused,
 	/*-----------------------------------------------------------------------*/
 	// connect to GM
 	/*-----------------------------------------------------------------------*/
-	UGameManager* pGameManager = UGameManager::Instantiate(*_GameObject);
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
 	/*-----------------------------------------------------------------------*/
 
 
 
 	/*-----------------------------------------------------------------------*/
-	// Set IsPaused
+	// Set Pause
 	/*-----------------------------------------------------------------------*/
-	pGameManager->SetPause( _IsPaused);
+	pGameManager->SetPause( a_bPause);
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+const int UCoreBlueprintFunctionLibrary::GetIceCrystals(const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Get Paused was a Nullptr Exception."));
+
+		return false;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Get Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	return static_cast<int>(pGameManager->GetIceCrystals());
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+void UCoreBlueprintFunctionLibrary::SetIceCrystals(const int a_IceCrystals, const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Set Paused was a Nullptr Exception."));
+
+		return;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Set Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	pGameManager->SetIceCrystals(a_IceCrystals);
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+void UCoreBlueprintFunctionLibrary::AddIceCrystals(const int a_IceCrystals, const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Set Paused was a Nullptr Exception."));
+
+		return;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Add Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	pGameManager->AddIceCrystals(a_IceCrystals);
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+void UCoreBlueprintFunctionLibrary::SubstractIceCrystals(const int a_IceCrystals, const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Set Paused was a Nullptr Exception."));
+
+		return;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Substract Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	pGameManager->SubstractIceCrystals(a_IceCrystals);
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+void UCoreBlueprintFunctionLibrary::IncrementIceCrystals(const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Set Paused was a Nullptr Exception."));
+
+		return;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Increment Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	pGameManager->IncrementIceCrystals();
+	/*-----------------------------------------------------------------------*/
+}
+
+
+
+void UCoreBlueprintFunctionLibrary::DecrementIceCrystals(const UObject* a_GameObject)
+{
+	/*-----------------------------------------------------------------------*/
+	// nullptr exception
+	/*-----------------------------------------------------------------------*/
+	if (a_GameObject == nullptr)
+	{
+		UE_LOG(LogTemp, Error,
+			TEXT("Game Object of Set Paused was a Nullptr Exception."));
+
+		return;
+	}
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// connect to GM
+	/*-----------------------------------------------------------------------*/
+	UGameManager* pGameManager = UGameManager::Instantiate(*a_GameObject);
+	/*-----------------------------------------------------------------------*/
+
+
+
+	/*-----------------------------------------------------------------------*/
+	// Decrement Ice Crystals
+	/*-----------------------------------------------------------------------*/
+	pGameManager->DecrementIceCrystals();
 	/*-----------------------------------------------------------------------*/
 }
 /*****************************************************************************/

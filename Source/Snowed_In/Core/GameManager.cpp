@@ -45,3 +45,38 @@ auto UGameManager::SetPause(const bool& a_bPause) -> UGameManager&
 	bPause = a_bPause;
 	return *this;
 }
+
+auto UGameManager::GetIceCrystals(void) const -> const uint32
+{
+	return IceCrystals;
+}
+
+auto UGameManager::SetIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
+{
+	IceCrystals = a_IceCrystals;
+	return *this;
+}
+
+auto UGameManager::AddIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
+{
+	IceCrystals += a_IceCrystals;
+	return *this;
+}
+
+auto UGameManager::SubstractIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
+{
+	IceCrystals -= a_IceCrystals;
+	return *this;
+}
+
+auto UGameManager::IncrementIceCrystals(void) -> UGameManager&
+{
+	IceCrystals++;
+	return *this;
+}
+
+auto UGameManager::DecrementIceCrystals(void) -> UGameManager&
+{
+	IceCrystals--;
+	return *this;
+}
