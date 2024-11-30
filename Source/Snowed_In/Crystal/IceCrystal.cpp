@@ -24,25 +24,45 @@ AIceCrystal::AIceCrystal()
 	SMCrystal->SetSimulatePhysics(true);
 	SMCrystal->SetEnableGravity(true);
 
+	// Collision
+	CrystalHitbox->SetSphereRadius(CRYSTAL_HITBOX_SIZE);
+	CrystalHitbox->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+
+#if WITH_EDITOR
+	// Make the hitbox visible in the editor
+	CrystalHitbox->bHiddenInGame = false;
+#endif
 
 }
 
-void AIceCrystal::InitializeCrystal(int a_CrystalValue)
+void AIceCrystal::InitializeCrystal(int a_CrystalValue, FVector a_SpawnPoint, float a_CrystalLifetime)
 {
+	// Set properties of the crystal
 	Value = a_CrystalValue;
+	SpawnPoint = a_SpawnPoint;
+	CrystalLifetime = a_CrystalLifetime;
+
+	// Set the spawn point
+	SetActorLocation(SpawnPoint);
+
+	// Set Lifetime -> make sure the crystals are destroyed after a certain amount of time
+	SetLifeSpan(CrystalLifetime);
 }
 
 // Called when the game starts or when spawned
 void AIceCrystal::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+//! Needs to be removed after SpawnManager is implemented
+#if WITH_EDITOR
+	InitializeCrystal(167, FVector(1400, 1820.0, 5000), CrystalLifetime);
+#endif
 }
 
 // Called every frame
 void AIceCrystal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

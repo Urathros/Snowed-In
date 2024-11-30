@@ -4,6 +4,7 @@
 # Visual Studio Code user specific files
 .vscode/
 Snowed_In.code-workspace
+.ignore
 
 # Compiled Object files
 *.slo
