@@ -89,6 +89,8 @@ void UHudWidget::HandleMoveableDisabling()
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
 	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
 	UE_LOG(LogTemp, Display, TEXT("Moveable is false"));
+	Character->HandleMouseCanceledDelegate.Unbind();
+
 
 }
 
