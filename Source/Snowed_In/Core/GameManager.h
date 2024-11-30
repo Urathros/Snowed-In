@@ -7,6 +7,10 @@
 #include "GameManager.generated.h"
 
 DECLARE_DELEGATE(FHandleIceCrystalsChangedSignature);
+DECLARE_DELEGATE(FHandleWaveClearedSignature);
+DECLARE_DELEGATE(FHandleInBuildChangedSignature);
+
+class AEnemySpawner;
 
 /**
  * 
@@ -52,7 +56,20 @@ public:
 	// Decrement the ice crystal counter
 	auto DecrementIceCrystals(void) -> UGameManager&;
 
-	#pragma endregion
+	auto SetWaveSpawnInProgress(const bool& a_bInProgress) -> UGameManager&;
+	auto GetWaveSpawnInProgress(void) const -> const bool;
+
+	auto IncrementEnemyCount(void) -> UGameManager&;
+	auto DecrementEnemyCount(void) -> UGameManager&;
+	auto GetEnemyCount(void) const -> const int32;
+
+	auto GetEnemySpawner(void) -> AEnemySpawner*;
+	auto SetEnemySpawner(AEnemySpawner* a_spawner) -> UGameManager&;
+
+	auto SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&;
+	auto GetInBuildMode(void) const -> const bool;
+
+#pragma endregion
 	/*************************************************************************/
 private:
 	/*************************************************************************/
@@ -65,10 +82,22 @@ private:
 	// Counter of global ice crystals
 	uint32 IceCrystals = 0;
 
+	// Whether a wave is currently in the spawning phase
+	bool bWaveSpawnInProgress = false;
+
+	// How many enemies are currently in the Level
+	int32 EnemyCount = 0;
+
+	// Reference to the Enemy Spawner
+	class AEnemySpawner* EnemySpawner = nullptr;
+
+	bool bInBuildMode = true;
 
 	#pragma endregion
 	/*************************************************************************/
 
 public:
 	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;
+	FHandleWaveClearedSignature HandleWaveClearedDelegate = nullptr;
+	FHandleInBuildChangedSignature FHandleInBuildChangedDelegate = nullptr;
 };

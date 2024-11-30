@@ -2,6 +2,7 @@
 
 
 #include "../Core/GameManager.h"
+#include "Enemy/EnemySpawner.h"
 #include <Kismet/GameplayStatics.h>
 
 auto UGameManager::GetGameInstance(const UObject& a_target) -> UGameInstance* const
@@ -84,4 +85,73 @@ auto UGameManager::DecrementIceCrystals(void) -> UGameManager&
 	IceCrystals--;
 	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
+}
+
+auto UGameManager::SetWaveSpawnInProgress(const bool& a_bInProgress) -> UGameManager&
+{
+	bWaveSpawnInProgress = a_bInProgress;
+	return *this;
+}
+
+auto UGameManager::GetWaveSpawnInProgress(void) const -> const bool
+{
+	return bWaveSpawnInProgress;
+}
+
+auto UGameManager::IncrementEnemyCount(void) -> UGameManager&
+{
+	EnemyCount++;
+	return *this;
+}
+
+auto UGameManager::DecrementEnemyCount(void) -> UGameManager&
+{
+	EnemyCount--;
+
+	if (EnemyCount == 0 && bWaveSpawnInProgress == false)
+	{
+		HandleWaveClearedDelegate.ExecuteIfBound();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "Wave Defeated !!");
+		SetInBuildMode(true);
+	}
+
+	return *this;
+}
+
+auto UGameManager::GetEnemyCount(void) const -> const int32
+{
+	return EnemyCount;
+}
+
+auto UGameManager::GetEnemySpawner(void) -> AEnemySpawner*
+{
+	return EnemySpawner;
+}
+
+auto UGameManager::SetEnemySpawner(AEnemySpawner* a_spawner) -> UGameManager&
+{
+	EnemySpawner = a_spawner;
+	return *this;
+}
+
+/// <summary>
+/// Use this function to Set the bInBuildMode variable and automatically start the next wave, when exiting build mode
+/// </summary>
+/// <param name="a_bInBuildMode">Whether to be in build mode or not</param>
+/// <returns>A ref to the GameManager for Functional programming</returns>
+auto UGameManager::SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&
+{
+	// Updating Variable
+	bInBuildMode = a_bInBuildMode;
+	FHandleInBuildChangedDelegate.ExecuteIfBound();
+
+	// Starting next Wave if exiting Build Mode
+	if (bInBuildMode == false && EnemySpawner) EnemySpawner->StartNextWave();
+
+	return *this;
+}
+
+auto UGameManager::GetInBuildMode(void) const -> const bool
+{
+	return bInBuildMode;
 }

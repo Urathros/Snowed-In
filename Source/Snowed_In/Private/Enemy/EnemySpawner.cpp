@@ -2,6 +2,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Enemy/EnemySpawner.h"
+#include "../Core/GameManager.h"
 
 // Sets default values
 AEnemySpawner::AEnemySpawner()
@@ -20,6 +21,9 @@ void AEnemySpawner::BeginPlay()
 	if (Enemies.Num() != 3) GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Enemies need to be three");
 
 	StartNextWave();
+
+	GM = UGameManager::Instantiate(*this);
+	if (GM) GM->SetEnemySpawner(this);
 }
 
 // Called every frame
@@ -32,6 +36,8 @@ void AEnemySpawner::Tick(float DeltaTime)
 void AEnemySpawner::StartNextWave(void)
 {
 	CurrentWave++;
+	if (GM) GM->SetWaveSpawnInProgress(true);
+
 	if (CurrentWave > MaxWaveCount)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "You have defeated ALL waves");
@@ -52,8 +58,9 @@ void AEnemySpawner::SpawnEnemy(void)
 
 	if (rngRange == 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, "Wave Done");
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, "Wave Spawn Done");
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
+		if (GM) GM->SetWaveSpawnInProgress(false);
 		return;
 	}
 

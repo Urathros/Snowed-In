@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Enemy/EnemyController.h"
 #include "Shed.h"
+#include "../Core/GameManager.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -45,6 +46,9 @@ void AEnemy::BeginPlay()
 			else GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "No Controller (of type AEnemyController");
 		}
 	}
+
+	GM = UGameManager::Instantiate(*this);
+	if (GM) GM->IncrementEnemyCount();
 }
 
 // Called every frame
@@ -69,6 +73,7 @@ bool AEnemy::TakeDamage(int32 Dmg)
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("%s died"), *GetName()));
 		//TODO: Add Particles and put Destroy on Delay (make mesh invisible instead)
 		Destroy();
+		if (GM) GM->DecrementEnemyCount();
 		return true;
 	}
 

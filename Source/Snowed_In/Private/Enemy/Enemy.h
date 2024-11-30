@@ -39,4 +39,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int32 HP = 1;
+
+	class UGameManager* GM = nullptr;
 };

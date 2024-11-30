@@ -69,4 +69,6 @@ private:
 	int32 MaxWaveCount = 0;
 
 	FWaveData ToSpawn = {};
+
+	class UGameManager* GM = nullptr;
 };
