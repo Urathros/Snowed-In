@@ -35,10 +35,14 @@ void UHudWidget::HandleIceCrystalsChanged()
 
 void UHudWidget::HandleButtonBuyTier1Clicked()
 {
+	if (!PlayerController) return;
 
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 1 Clicked!"));
 
-	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
+	PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
+	int32 viewX = 0, viewY = 0;
+	PlayerController->GetViewportSize(viewX, viewY);
+	UE_LOG(LogTemp, Display, TEXT("Viewport: X %s Y %s"), *FString::FromInt(viewX), *FString::FromInt(viewY));
 
 	UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(MouseLocation.X), *FString::FromInt(MouseLocation.Y), *FString::FromInt(MouseLocation.Z));
 
@@ -47,7 +51,7 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 
 	
 
-	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X - 150.0f, MouseLocation.Y - 225.0f, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X - (viewX / 7.353f), MouseLocation.Y - viewY / 3.808f, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
 
 	float x = 0.0f, y = 0.0f;
 
@@ -95,9 +99,8 @@ void UHudWidget::HandleMoveableDisabling()
 {
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
 	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
-	UE_LOG(LogTemp, Display, TEXT("Moveable is false"));
 	Character->HandleMouseCanceledDelegate.Unbind();
-
+	CurrentBuilding->Activate();
 
 }
 
@@ -111,8 +114,8 @@ void UHudWidget::HandleBuildingMovement()
 	float x = 0.0f, y = 0.0f;
 
 	if(!PlayerController->GetMousePosition(x, y)) return;
-	Dir.X = (y - LastPos.Y) * 0.4f;
-	Dir.Y = (x - LastPos.X) * 0.4f;
+	Dir.X = (y - LastPos.Y);
+	Dir.Y = (x - LastPos.X);
 
 	if (LastPos.X != 0.0f) Dir.X *= -1.0f;
 
