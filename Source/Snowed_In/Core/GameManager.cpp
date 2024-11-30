@@ -192,3 +192,14 @@ auto UGameManager::InvokeHUDBuilding(void) -> UGameManager&
 	HandleHUDCreationDelegate.ExecuteIfBound();
 	return *this;
 }
+
+auto UGameManager::GetCalendarSystem(void) -> ACalendarSystem*
+{
+	return CalendarSystem;
+}
+
+auto UGameManager::SetCalendarSystem(ACalendarSystem* a_Calendar) -> UGameManager&
+{
+	CalendarSystem = a_Calendar;
+	return *this;
+}

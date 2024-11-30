@@ -10,6 +10,7 @@
 #include <../Buildings/Tower.h>
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "../Environment/CalendarSystem.h"
 
 const FString UHudWidget::CANCEL_TEXT = FString(TEXT("Cancel"));
 const FString UHudWidget::TIER1_TEXT = FString(TEXT("Tier 1"));
@@ -86,7 +87,9 @@ void UHudWidget::HandleButtonBuyTier2Clicked()
 
 void UHudWidget::HandleCancelButtonClicked()
 {
-	if (GameManager) GameManager->SetInBuildMode(false);
+	if (!GameManager) return;
+	GameManager->SetInBuildMode(false);
+	if (const auto calendar = GameManager->GetCalendarSystem()) calendar->ForwardTime();
 	RemoveFromParent();
 }
 
@@ -97,8 +100,11 @@ void UHudWidget::HandleButtonBuyTier3Clicked()
 
 void UHudWidget::HandleMoveableDisabling()
 {
+	if (!GameManager) return;
+
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
-	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
+	GameManager->SubstractIceCrystals(TIER1_COST);
+	if (ButtonBuyTier1 && (GameManager->GetIceCrystals() >= TIER1_COST)) ButtonBuyTier1->SetIsEnabled(true);
 	Character->HandleMouseCanceledDelegate.Unbind();
 	CurrentBuilding->Activate();
 

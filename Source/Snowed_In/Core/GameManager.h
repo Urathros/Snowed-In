@@ -13,6 +13,7 @@ DECLARE_DELEGATE(FHandleInBuildChangedSignature);
 DECLARE_DELEGATE(FHandleHUDCreationSignature);
 
 class AEnemySpawner;
+class ACalendarSystem;
 
 /**
  * 
@@ -77,6 +78,9 @@ public:
 	auto GetInBuildMode(void) const -> const bool;
 
 	auto InvokeHUDBuilding(void) -> UGameManager&;
+
+	auto GetCalendarSystem(void) -> ACalendarSystem*;
+	auto SetCalendarSystem(ACalendarSystem* a_Calendar) -> UGameManager&;
 #pragma endregion
 	/*************************************************************************/
 private:
@@ -104,6 +108,7 @@ private:
 
 	bool bInBuildMode = true;
 
+	ACalendarSystem* CalendarSystem = nullptr;
 	#pragma endregion
 	/*************************************************************************/
 
