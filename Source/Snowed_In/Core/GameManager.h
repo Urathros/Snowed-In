@@ -10,6 +10,7 @@ DECLARE_DELEGATE(FHandleIceCrystalsChangedSignature);
 DECLARE_DELEGATE(FHandleWaveClearedSignature);
 DECLARE_DELEGATE(FHandleWaveChangedSignature);
 DECLARE_DELEGATE(FHandleInBuildChangedSignature);
+DECLARE_DELEGATE(FHandleHUDCreationSignature);
 
 class AEnemySpawner;
 
@@ -73,6 +74,7 @@ public:
 	auto SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&;
 	auto GetInBuildMode(void) const -> const bool;
 
+	auto InvokeHUDBuilding(void) -> UGameManager&;
 #pragma endregion
 	/*************************************************************************/
 private:
@@ -107,5 +109,6 @@ public:
 	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;
 	FHandleWaveClearedSignature HandleWaveClearedDelegate = nullptr;
 	FHandleWaveChangedSignature HandleWaveChangedDelegate = nullptr;
-	FHandleInBuildChangedSignature FHandleInBuildChangedDelegate = nullptr;
+	FHandleInBuildChangedSignature HandleInBuildChangedDelegate = nullptr;
+	FHandleHUDCreationSignature HandleHUDCreationDelegate = nullptr;
 };

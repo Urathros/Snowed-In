@@ -4,6 +4,7 @@
 #include "../Core/IngameHUD.h"
 #include "../UI/HudWidget.h"
 #include "Blueprint/UserWidget.h"
+#include "../Core/GameManager.h"
 
 
 const FString AIngameHUD::WIDGET_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_HUD'"));
@@ -20,12 +21,14 @@ void AIngameHUD::HandleHudWidgetCreation()
 
 void AIngameHUD::BeginPlay()
 {
-
+    if (GameManager = UGameManager::Instantiate(*this)); !GameManager) return;
     if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
 
     PlayerController->bShowMouseCursor = true;
     PlayerController->bEnableClickEvents = true;
     PlayerController->bEnableMouseOverEvents = true;
+
+    GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
 
     if (HudClass)
     {

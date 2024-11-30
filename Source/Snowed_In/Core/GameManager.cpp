@@ -163,7 +163,7 @@ auto UGameManager::SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&
 {
 	// Updating Variable
 	bInBuildMode = a_bInBuildMode;
-	FHandleInBuildChangedDelegate.ExecuteIfBound();
+	HandleInBuildChangedDelegate.ExecuteIfBound();
 
 	// Starting next Wave if exiting Build Mode
 	if (bInBuildMode == false && EnemySpawner) EnemySpawner->StartNextWave();
@@ -174,4 +174,10 @@ auto UGameManager::SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&
 auto UGameManager::GetInBuildMode(void) const -> const bool
 {
 	return bInBuildMode;
+}
+
+auto UGameManager::InvokeHUDBuilding(void) -> UGameManager&
+{
+	HandleHUDCreationDelegate.ExecuteIfBound();
+	return *this;
 }

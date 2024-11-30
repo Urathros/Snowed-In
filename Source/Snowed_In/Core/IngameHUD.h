@@ -31,6 +31,10 @@ private:
 	class SNOWED_IN_API UHudWidget* HudWidget = nullptr;
 
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Game Manager", AllowPrivateAccess = "true"))
+	class UGameManager* GameManager = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Player Controller", AllowPrivateAccess = "true"))
 	APlayerController* PlayerController = nullptr;
 };
