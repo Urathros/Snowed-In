@@ -45,12 +45,19 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+	
+
+	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X - 150.0f, MouseLocation.Y - 225.0f, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+
 	float x = 0.0f, y = 0.0f;
 
 	if (!PlayerController->GetMousePosition(x, y)) return;
-	
+	Dir.X = y  * 0.25f;
+	Dir.Y = x  * 0.25f;
 
-	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X  /*+ y * 0.01f*/, MouseLocation.Y /*+ x * 0.01f*/, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() + Dir);
+	LastPos = FVector(x, y, 0.0f);
+
 	if (Character)
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
@@ -96,7 +103,7 @@ void UHudWidget::HandleMoveableDisabling()
 
 void UHudWidget::HandleBuildingMovement()
 {
-	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
+	//if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
 	//CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() * MouseDirection /** Speed * GetWorld()->GetDeltaSeconds()*/);
 	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 
@@ -104,8 +111,8 @@ void UHudWidget::HandleBuildingMovement()
 	float x = 0.0f, y = 0.0f;
 
 	if(!PlayerController->GetMousePosition(x, y)) return;
-	Dir.X = (y - LastPos.Y) * 0.5f;
-	Dir.Y = (x - LastPos.X) * 0.5f;
+	Dir.X = (y - LastPos.Y) * 0.4f;
+	Dir.Y = (x - LastPos.X) * 0.4f;
 
 	if (LastPos.X != 0.0f) Dir.X *= -1.0f;
 
