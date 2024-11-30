@@ -121,8 +121,8 @@ void UHudWidget::HandleBuildingMovement()
 
 	//Dir.Normalize();
 	UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(Dir.Y), *FString::FromInt(Dir.X), *FString::FromInt(Dir.Z));
-
-	CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() + Dir);
+	
+	CurrentBuilding->SetActorLocation(GameManager->ConvertPosToGrid(CurrentBuilding->GetActorLocation() + Dir));
 	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 	UE_LOG(LogTemp, Display, TEXT("Moving"));
 	LastPos = FVector(x, y, 0.0f);

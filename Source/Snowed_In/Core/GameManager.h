@@ -29,7 +29,7 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize();
 
-	static auto ConvertPosToGrid(const FVector& a_pos) -> const FVector;
+	auto ConvertPosToGrid(const FVector& a_pos) -> const FVector;
 
 	/*************************************************************************/
 	#pragma region Getter/Setter
