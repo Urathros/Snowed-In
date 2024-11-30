@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Enemy/Enemy.h"
 #include "Enemy/EnemySpawner.h"
+#include "Enemy/Enemy.h"
 #include "../Core/GameManager.h"
 
 // Sets default values

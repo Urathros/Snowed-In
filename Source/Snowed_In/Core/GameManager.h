@@ -29,6 +29,8 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize();
 
+	static auto ConvertPosToGrid(const FVector& a_pos) -> const FVector;
+
 	/*************************************************************************/
 	#pragma region Getter/Setter
 	/*************************************************************************/
@@ -104,6 +106,8 @@ private:
 
 	#pragma endregion
 	/*************************************************************************/
+
+	static const int32 GridSize = 200; // 2x2 Meters per Grid Cell
 
 public:
 	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;

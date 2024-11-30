@@ -37,6 +37,17 @@ void UGameManager::Deinitialize()
 	UE_LOG(LogTemp, Display, TEXT("Game Manager finalized."));
 }
 
+auto UGameManager::ConvertPosToGrid(const FVector& a_pos) -> const FVector
+{
+	auto convertedPos = FVector::Zero();
+	convertedPos.X = a_pos.X - ((int32)a_pos.X % GridSize);
+	convertedPos.Y = a_pos.Y - ((int32)a_pos.Y % GridSize);
+
+	convertedPos += FVector(GridSize, GridSize, 0.f) * 0.5f;
+
+	return convertedPos;
+}
+
 auto UGameManager::GetPause() const -> const bool
 {
 	return bPause;

@@ -59,7 +59,7 @@ void ATower::BeginPlay()
 
 	if (AudioComponent) AudioComponent->Play();
 
-	Activate();
+	//Activate();
 
 	if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
 }
@@ -73,6 +73,8 @@ void ATower::Tick(float DeltaTime)
 
 void ATower::Activate(void)
 {
+	if (IsActive) return;
+
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s is now active"), *GetName()));
 	IsActive = true;
 	if (AudioComponent) AudioComponent->SetTriggerParameter("On Build");
