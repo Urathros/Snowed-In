@@ -58,8 +58,8 @@ ASnowed_InCharacter::ASnowed_InCharacter()
 
 void ASnowed_InCharacter::HandleMouseClicked(const FInputActionInstance& Instance)
 {
-	auto ctx = Instance.GetValue().Get<bool>();
-	UE_LOG(LogTemp, Display, TEXT("Clicked: %s"), ctx ? TEXT("true") : TEXT("false") );
+	//auto ctx = Instance.GetValue().Get<bool>();
+	//UE_LOG(LogTemp, Display, TEXT("Clicked: %s"), ctx ? TEXT("true") : TEXT("false") );
 	HandleMouseClickedDelegate.ExecuteIfBound();
 }
 
