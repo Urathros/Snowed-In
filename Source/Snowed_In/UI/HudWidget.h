@@ -36,6 +36,12 @@ public:
 	UFUNCTION()
 	void HandleButtonBuyTier3Clicked();
 
+	UFUNCTION()
+	void HandleMoveableDisabling();
+
+	UFUNCTION()
+	void HandleBuildingMovement();
+
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
@@ -111,4 +117,12 @@ private:
 	/*************************************************************************/
 
 	class ADummyBuilding* CurrentBuilding = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Mouse Location", Category = "Movement", AllowPrivateAccess = "true"))
+	FVector MouseLocation = FVector::Zero();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Mouse Direction", Category = "Movement", AllowPrivateAccess = "true"))
+	FVector MouseDirection = FVector::Zero();
+
+	FTimerHandle MoveBuildingHandle;
 };

@@ -15,9 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	ADummyBuilding();
 
-	UFUNCTION()
-	void HandleMoveableDisabling();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,18 +37,4 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 		meta = (DisplayName = "Cube Material", Category = "Component", AllowPrivateAccess = true))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Player Controller", Category = "System", AllowPrivateAccess = "true"))
-	APlayerController* PlayerController = nullptr;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Mouse Location", Category = "Movement", AllowPrivateAccess = "true"))
-	FVector MouseLocation = FVector::Zero();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Mouse Direction", Category = "Movement", AllowPrivateAccess = "true"))
-	FVector MouseDirection = FVector::Zero();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Moveable", Category = "Movement", AllowPrivateAccess = "true"))
-	bool bMoveable = false;
 };

@@ -8,6 +8,8 @@
 #include <Components/TextBlock.h>
 #include <Components/Button.h>
 #include <../Buildings/DummyBuilding.h>
+#include "TimerManager.h"
+#include "Engine/World.h"
 
 const FString UHudWidget::TIER1_TEXT = FString(TEXT("Tier 1"));
 const FString UHudWidget::TIER2_TEXT = FString(TEXT("Tier 2"));
@@ -35,7 +37,6 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 1 Clicked!"));
 
-	FVector MouseLocation, MouseDirection;
 	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
 
 	UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(MouseLocation.X), *FString::FromInt(MouseLocation.Y), *FString::FromInt(MouseLocation.Z));
@@ -43,13 +44,15 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	CurrentBuilding = GetWorld()->SpawnActor<ADummyBuilding>(MouseLocation, FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	CurrentBuilding = GetWorld()->SpawnActor<ADummyBuilding>(FVector(MouseLocation.X, MouseLocation.Y, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
 	if (Character)
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
-		Character->HandleMouseClickedDelegate.BindUObject(CurrentBuilding, &ADummyBuilding::HandleMoveableDisabling);
+		Character->HandleMouseClickedDelegate.BindUObject(this, &UHudWidget::HandleMoveableDisabling);
 	}
 
+	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
+	GetWorld()->GetTimerManager().SetTimer(MoveBuildingHandle, this, &UHudWidget::HandleBuildingMovement, 1.0f, true);
 }
 
 void UHudWidget::HandleButtonBuyTier2Clicked()
@@ -60,6 +63,22 @@ void UHudWidget::HandleButtonBuyTier2Clicked()
 void UHudWidget::HandleButtonBuyTier3Clicked()
 {
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 3 Clicked!"));
+}
+
+void UHudWidget::HandleMoveableDisabling()
+{
+	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
+	UE_LOG(LogTemp, Display, TEXT("Moveable is false"));
+
+}
+
+void UHudWidget::HandleBuildingMovement()
+{
+	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
+	CurrentBuilding->SetActorLocation(FVector(MouseLocation.X, MouseLocation.Y, 0.0f));
+	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
+	UE_LOG(LogTemp, Display, TEXT("Moving"));
+
 }
 
 void UHudWidget::NativeConstruct()

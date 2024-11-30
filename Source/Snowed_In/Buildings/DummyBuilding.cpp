@@ -20,13 +20,6 @@ ADummyBuilding::ADummyBuilding()
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_REF_PATH).Object);
 	Mesh->SetMaterial(0, Material);
-
-	bMoveable = true;
-}
-
-void ADummyBuilding::HandleMoveableDisabling()
-{
-	bMoveable = false;
 }
 
 // Called when the game starts or when spawned
@@ -34,17 +27,11 @@ void ADummyBuilding::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
 }
 
 // Called every frame
 void ADummyBuilding::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!bMoveable) return; 
-	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
-	SetActorLocation(MouseLocation);
-	SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 }
 
