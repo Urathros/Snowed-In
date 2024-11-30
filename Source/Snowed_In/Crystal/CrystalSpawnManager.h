@@ -74,5 +74,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
 	float ReductionDelay = 1.0f;
 
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	bool bDebug = false;
+
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	int DebugWave = 1;
+
 #pragma endregion
 };

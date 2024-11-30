@@ -24,6 +24,9 @@ void ACrystalSpawnManager::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StartSpawnTimerBind"));
 	GM->HandleWaveClearedDelegate.BindUObject(this, &ACrystalSpawnManager::StopSpawnTimer);
 	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StopSpawnTimerBind"));
+	
+	// !NOTE: Debugging purposes -> Needs to be removed
+	if (bDebug) StartSpawnTimer();
 }
 
 // Called every frame
@@ -48,12 +51,14 @@ void ACrystalSpawnManager::SpawnCrystal()
 {
 	if (GM && GM->GetWaveSpawnInProgress() == false)
 	{
-		CrystalValue = FMath::RoundToInt((GM->GetWave() * CrystalBaseValue) * CrystalMultiplierPerWave);
+		if (bDebug) CrystalValue = FMath::RoundToInt((DebugWave * CrystalBaseValue) * CrystalMultiplierPerWave);
+		else CrystalValue = FMath::RoundToInt((GM->GetWave() * CrystalBaseValue) * CrystalMultiplierPerWave);
 
-		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Wave: %d"), GM->GetWave());
-		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalBaseValue: %d"), CrystalBaseValue);
-		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalMultiplierPerWave: %f"), CrystalMultiplierPerWave);
-		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalValue: %d"), CrystalValue);
+		UE_LOG(LogTemp, Warning, TEXT("IceCrystal: GM-Wave: %d"), GM->GetWave());
+		UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Debug-Wave: %d"), DebugWave);
+		UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalBaseValue: %d"), CrystalBaseValue);
+		UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalMultiplierPerWave: %f"), CrystalMultiplierPerWave);
+		UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalValue: %d"), CrystalValue);
 
 		if (SpawnPool.Num() < MaxCrystals && SpawnPoints.Num() > 0)
 		{
