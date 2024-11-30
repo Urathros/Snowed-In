@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Buildings/Tower.h"
+#include "../Buildings/Tower.h"
 
 // Sets default values
 ATower::ATower()
@@ -15,7 +15,7 @@ ATower::ATower()
 void ATower::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Activate();
 }
 
 // Called every frame
@@ -25,3 +25,8 @@ void ATower::Tick(float DeltaTime)
 
 }
 
+void ATower::Activate(void)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s is now active"), *GetName()));
+	IsActive = true;
+}

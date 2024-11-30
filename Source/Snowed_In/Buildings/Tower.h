@@ -23,4 +23,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Activate(void);
+
+private:
+	bool IsActive = false;
 };
