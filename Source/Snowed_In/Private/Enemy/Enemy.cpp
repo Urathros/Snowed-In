@@ -37,7 +37,11 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	FTimerHandle handle = {};
-	GetWorld()->GetTimerManager().SetTimer(handle, this, &AEnemy::GoToShed, 0.5f, false, 0.5f);
+	if (const auto shed = UGameplayStatics::GetActorOfClass(GWorld, AShed::StaticClass()); shed)
+	{
+		if (auto ctrl = GetController<AEnemyController>(); ctrl) ctrl->MoveToPoint(shed->GetActorLocation());
+		else GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "No Controller (of type AEnemyController");
+	}
 }
 
 // Called every frame
@@ -51,14 +55,4 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-void AEnemy::GoToShed(void)
-{
-	if (const auto shed = UGameplayStatics::GetActorOfClass(GWorld, AShed::StaticClass()); shed)
-	{
-		if (auto ctrl = GetController<AEnemyController>(); ctrl) ctrl->MoveToPoint(shed->GetActorLocation());
-		else GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "No Controller (of type AEnemyController");
-	}
 }

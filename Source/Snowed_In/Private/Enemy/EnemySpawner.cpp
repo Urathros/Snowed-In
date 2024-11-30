@@ -60,7 +60,7 @@ void AEnemySpawner::SpawnEnemy(void)
 	auto enemyIdx = FMath::RandRange(0, rngRange);
 	if (enemyIdx == 1 && ToSpawn.LvlTwoCount <= 0) enemyIdx = 2;
 
-	auto spawnPointIdx = FMath::RandRange(0, ToSpawn.UsedStartPointCount);
+	auto spawnPointIdx = FMath::RandRange(0, FMath::Clamp(ToSpawn.UsedStartPointCount - 1, 0, 5));
 	auto spawnPoint = SpawnPoints[spawnPointIdx];
 
 	auto enemy = GetWorld()->SpawnActor<AEnemy>(Enemies[enemyIdx], spawnPoint->GetActorLocation(), spawnPoint->GetActorRotation());
@@ -69,17 +69,17 @@ void AEnemySpawner::SpawnEnemy(void)
 	{
 	case 1:
 		ToSpawn.LvlOneCount--;
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("1 rmv => %d"), ToSpawn.LvlOneCount));
+		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("1 rmv => %d"), ToSpawn.LvlOneCount));
 		break;
 
 	case 2:
 		ToSpawn.LvlTwoCount--;
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("2 rmv => %d"), ToSpawn.LvlTwoCount));
+		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("2 rmv => %d"), ToSpawn.LvlTwoCount));
 		break;
 
 	case 3:
 		ToSpawn.LvlThreeCount--;
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("3 rmv => %d"), ToSpawn.LvlThreeCount));
+		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("3 rmv => %d"), ToSpawn.LvlThreeCount));
 		break;
 
 	default:

@@ -27,8 +27,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void GoToShed(void);
-
 	// Paths
 	const FString MESH_PATH = "/Script/Engine.SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple.SKM_Manny_Simple'";
 	const FString MAT_PATH = "/Script/Engine.Material'/Game/Characters/Mannequins/Materials/M_Mannequin.M_Mannequin'";
