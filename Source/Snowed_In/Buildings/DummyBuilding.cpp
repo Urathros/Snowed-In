@@ -24,6 +24,11 @@ ADummyBuilding::ADummyBuilding()
 	bMoveable = true;
 }
 
+void ADummyBuilding::HandleMoveableDisabling()
+{
+	bMoveable = false;
+}
+
 // Called when the game starts or when spawned
 void ADummyBuilding::BeginPlay()
 {

@@ -3,6 +3,7 @@
 
 #include "../UI/HudWidget.h"
 #include "../Core/GameManager.h"
+#include "../Snowed_InCharacter.h"
 #include <Components/Image.h>
 #include <Components/TextBlock.h>
 #include <Components/Button.h>
@@ -42,7 +43,13 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	auto dummyBuilding = GetWorld()->SpawnActor<ADummyBuilding>(MouseLocation, FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	CurrentBuilding = GetWorld()->SpawnActor<ADummyBuilding>(MouseLocation, FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	if (Character)
+	{
+		Character->HandleMouseClickedDelegate.Unbind();
+		Character->HandleMouseClickedDelegate.BindUObject(CurrentBuilding, &ADummyBuilding::HandleMoveableDisabling);
+	}
+
 }
 
 void UHudWidget::HandleButtonBuyTier2Clicked()
@@ -60,6 +67,7 @@ void UHudWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
+	if (Character = PlayerController->GetPawn<ASnowed_InCharacter>(); !Character) return;
 
 	if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
 

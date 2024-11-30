@@ -5,6 +5,7 @@
 #include "../UI/HudWidget.h"
 #include "Blueprint/UserWidget.h"
 
+
 const FString AIngameHUD::WIDGET_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_HUD'"));
 
 AIngameHUD::AIngameHUD()

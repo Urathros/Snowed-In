@@ -10,6 +10,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include <EnhancedInputComponent.h>
+#include <EnhancedInputSubsystemInterface.h>
+#include <Kismet/GameplayStatics.h>
+#include <EnhancedInputSubsystems.h>
+#include "InputMappingContext.h"
+
+const FString ASnowed_InCharacter::MAPPING_CTX_PATH = FString(TEXT("InputMappingContext'/Game/SnowedIn/Input/IMC_Pawn'"));
+const FString ASnowed_InCharacter::CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseClick'"));
 
 ASnowed_InCharacter::ASnowed_InCharacter()
 {
@@ -43,6 +51,46 @@ ASnowed_InCharacter::ASnowed_InCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	ClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CLICK_IA_PATH).Object;
+	MappingContext = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*MAPPING_CTX_PATH).Object;
+}
+
+void ASnowed_InCharacter::HandleMouseClicked(const FInputActionInstance& Instance)
+{
+	auto ctx = Instance.GetValue().Get<bool>();
+	UE_LOG(LogTemp, Display, TEXT("Clicked: %s"), ctx ? TEXT("true") : TEXT("false") );
+	HandleMouseClickedDelegate.ExecuteIfBound();
+}
+
+void ASnowed_InCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if (auto Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(MappingContext, 0);
+		}
+	}
+
+	
+
+}
+
+void ASnowed_InCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(ClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseClicked);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
 }
 
 void ASnowed_InCharacter::Tick(float DeltaSeconds)

@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Snowed_InCharacter.generated.h"
 
+
+DECLARE_DELEGATE(FHandleMouseClickedSignature);
+
 UCLASS(Blueprintable)
 class ASnowed_InCharacter : public ACharacter
 {
@@ -13,6 +16,12 @@ class ASnowed_InCharacter : public ACharacter
 
 public:
 	ASnowed_InCharacter();
+
+	void HandleMouseClicked(const struct FInputActionInstance& Instance);
+
+	virtual void BeginPlay() override;
+
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
@@ -23,6 +32,10 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 private:
+
+	static const FString MAPPING_CTX_PATH;
+	static const FString CLICK_IA_PATH;
+
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* TopDownCameraComponent;
@@ -30,5 +43,14 @@ private:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputMappingContext* MappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputAction* ClickInputAction;
+
+public:
+	FHandleMouseClickedSignature HandleMouseClickedDelegate = nullptr;
 };
 

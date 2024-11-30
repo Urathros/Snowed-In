@@ -54,6 +54,13 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Game Manager", AllowPrivateAccess = "true"))
 	class UGameManager* GameManager = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Character", AllowPrivateAccess = "true"))
+	class ASnowed_InCharacter* Character = nullptr;
+
+	/*************************************************************************/
+	#pragma region GUIElements
+	/*************************************************************************/
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageIceCrystals", BindWidget, AllowPrivateAccess = "true"))
 		TObjectPtr<UImage> ImageIceCrystals = nullptr;
 
@@ -99,4 +106,9 @@ private:
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier3", BindWidget, AllowPrivateAccess = "true"))
 		TObjectPtr<UTextBlock> TextBlockBuyTier3 = nullptr;
+
+	#pragma endregion
+	/*************************************************************************/
+
+	class ADummyBuilding* CurrentBuilding = nullptr;
 };
