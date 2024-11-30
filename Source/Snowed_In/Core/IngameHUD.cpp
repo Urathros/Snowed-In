@@ -13,8 +13,20 @@ AIngameHUD::AIngameHUD()
     HudClass = ConstructorHelpers::FClassFinder<UUserWidget>(*WIDGET_PATH).Class;
 }
 
+void AIngameHUD::HandleHudWidgetCreation()
+{
+    if (HudWidget) HudWidget->AddToViewport();
+}
+
 void AIngameHUD::BeginPlay()
 {
+
+    if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
+
+    PlayerController->bShowMouseCursor = true;
+    PlayerController->bEnableClickEvents = true;
+    PlayerController->bEnableMouseOverEvents = true;
+
     if (HudClass)
     {
         if (HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudClass); HudWidget)

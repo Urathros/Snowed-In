@@ -17,6 +17,9 @@ class SNOWED_IN_API AIngameHUD : public AHUD
 public:
 	AIngameHUD();
 
+	UFUNCTION()
+	void HandleHudWidgetCreation();
+
 	virtual void BeginPlay() override;
 
 private:
@@ -26,4 +29,8 @@ private:
 		TSubclassOf<class UUserWidget> HudClass = nullptr;
 
 	class SNOWED_IN_API UHudWidget* HudWidget = nullptr;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Player Controller", AllowPrivateAccess = "true"))
+	APlayerController* PlayerController = nullptr;
 };
