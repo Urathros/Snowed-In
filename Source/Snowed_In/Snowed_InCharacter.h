@@ -8,6 +8,7 @@
 
 
 DECLARE_DELEGATE(FHandleMouseClickedSignature);
+DECLARE_DELEGATE(FHandleMouseCanceledSignature);
 
 UCLASS(Blueprintable)
 class ASnowed_InCharacter : public ACharacter
@@ -18,6 +19,7 @@ public:
 	ASnowed_InCharacter();
 
 	void HandleMouseClicked(const struct FInputActionInstance& Instance);
+	void HandleMouseCanceled(const struct FInputActionInstance& Instance);
 
 	virtual void BeginPlay() override;
 
@@ -35,6 +37,7 @@ private:
 
 	static const FString MAPPING_CTX_PATH;
 	static const FString CLICK_IA_PATH;
+	static const FString CANCEL_CLICK_IA_PATH;
 
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -50,7 +53,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		class UInputAction* ClickInputAction;
 
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputAction* CancelClickInputAction;
+
 public:
 	FHandleMouseClickedSignature HandleMouseClickedDelegate = nullptr;
+	FHandleMouseCanceledSignature HandleMouseCanceledDelegate = nullptr;
 };
 

@@ -42,6 +42,9 @@ public:
 	UFUNCTION()
 	void HandleBuildingMovement();
 
+	UFUNCTION()
+	void HandleBuildingAbort();
+
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 

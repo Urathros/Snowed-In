@@ -54,10 +54,13 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
 		Character->HandleMouseClickedDelegate.BindUObject(this, &UHudWidget::HandleMoveableDisabling);
+		Character->HandleMouseCanceledDelegate.Unbind();
+		Character->HandleMouseCanceledDelegate.BindUObject(this, &UHudWidget::HandleBuildingAbort);
 	}
 
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
 	GetWorld()->GetTimerManager().SetTimer(MoveBuildingHandle, this, &UHudWidget::HandleBuildingMovement, 1.0f, true);
+	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(false);
 }
 
 void UHudWidget::HandleButtonBuyTier2Clicked()
@@ -73,6 +76,7 @@ void UHudWidget::HandleButtonBuyTier3Clicked()
 void UHudWidget::HandleMoveableDisabling()
 {
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
+	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
 	UE_LOG(LogTemp, Display, TEXT("Moveable is false"));
 
 }
@@ -99,6 +103,12 @@ void UHudWidget::HandleBuildingMovement()
 	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 	UE_LOG(LogTemp, Display, TEXT("Moving"));
 	LastPos = FVector(x, y, 0.0f);
+}
+
+void UHudWidget::HandleBuildingAbort()
+{
+	if (CurrentBuilding) CurrentBuilding->Destroy();
+	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
 }
 
 void UHudWidget::NativeConstruct()

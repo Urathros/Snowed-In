@@ -18,6 +18,7 @@
 
 const FString ASnowed_InCharacter::MAPPING_CTX_PATH = FString(TEXT("InputMappingContext'/Game/SnowedIn/Input/IMC_Pawn'"));
 const FString ASnowed_InCharacter::CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseClick'"));
+const FString ASnowed_InCharacter::CANCEL_CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseCancel'"));
 
 ASnowed_InCharacter::ASnowed_InCharacter()
 {
@@ -53,6 +54,7 @@ ASnowed_InCharacter::ASnowed_InCharacter()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
 	ClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CLICK_IA_PATH).Object;
+	CancelClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CANCEL_CLICK_IA_PATH).Object;
 	MappingContext = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*MAPPING_CTX_PATH).Object;
 }
 
@@ -61,6 +63,11 @@ void ASnowed_InCharacter::HandleMouseClicked(const FInputActionInstance& Instanc
 	//auto ctx = Instance.GetValue().Get<bool>();
 	//UE_LOG(LogTemp, Display, TEXT("Clicked: %s"), ctx ? TEXT("true") : TEXT("false") );
 	HandleMouseClickedDelegate.ExecuteIfBound();
+}
+
+void ASnowed_InCharacter::HandleMouseCanceled(const FInputActionInstance& Instance)
+{
+	HandleMouseCanceledDelegate.ExecuteIfBound();
 }
 
 void ASnowed_InCharacter::BeginPlay()
@@ -86,6 +93,7 @@ void ASnowed_InCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	if (auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(ClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseClicked);
+		EnhancedInputComponent->BindAction(CancelClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseCanceled);
 	}
 	else
 	{
