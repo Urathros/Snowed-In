@@ -44,7 +44,12 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X, MouseLocation.Y, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	float x = 0.0f, y = 0.0f;
+
+	if (!PlayerController->GetMousePosition(x, y)) return;
+	
+
+	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X  /*+ y * 0.01f*/, MouseLocation.Y /*+ x * 0.01f*/, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
 	if (Character)
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
@@ -79,10 +84,21 @@ void UHudWidget::HandleBuildingMovement()
 	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 
 	//UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(MouseDirection.X), *FString::FromInt(MouseDirection.Y), *FString::FromInt(MouseDirection.Z));
-	CurrentBuilding->SetActorLocation(FVector(MouseLocation.X + Speed, MouseLocation.Y + Speed, 0.0f));
+	float x = 0.0f, y = 0.0f;
+
+	if(!PlayerController->GetMousePosition(x, y)) return;
+	Dir.X = (y - LastPos.Y) * 0.5f;
+	Dir.Y = (x - LastPos.X) * 0.5f;
+
+	if (LastPos.X != 0.0f) Dir.X *= -1.0f;
+
+	//Dir.Normalize();
+	UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(Dir.Y), *FString::FromInt(Dir.X), *FString::FromInt(Dir.Z));
+
+	CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() + Dir);
 	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 	UE_LOG(LogTemp, Display, TEXT("Moving"));
-	LastPos = MouseLocation;
+	LastPos = FVector(x, y, 0.0f);
 }
 
 void UHudWidget::NativeConstruct()
