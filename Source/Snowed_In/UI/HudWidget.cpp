@@ -7,7 +7,7 @@
 #include <Components/Image.h>
 #include <Components/TextBlock.h>
 #include <Components/Button.h>
-#include <../Buildings/DummyBuilding.h>
+#include <../Buildings/Tower.h>
 #include "TimerManager.h"
 #include "Engine/World.h"
 
@@ -44,7 +44,7 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	CurrentBuilding = GetWorld()->SpawnActor<ADummyBuilding>(FVector(MouseLocation.X, MouseLocation.Y, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
+	CurrentBuilding = GetWorld()->SpawnActor<ATower>(FVector(MouseLocation.X, MouseLocation.Y, 0.0f), FRotator::MakeFromEuler(MouseDirection), SpawnInfo);
 	if (Character)
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
@@ -75,16 +75,20 @@ void UHudWidget::HandleMoveableDisabling()
 void UHudWidget::HandleBuildingMovement()
 {
 	if (PlayerController) PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
-	CurrentBuilding->SetActorLocation(FVector(MouseLocation.X, MouseLocation.Y, 0.0f));
+	//CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() * MouseDirection /** Speed * GetWorld()->GetDeltaSeconds()*/);
+	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
+
+	//UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(MouseDirection.X), *FString::FromInt(MouseDirection.Y), *FString::FromInt(MouseDirection.Z));
+	CurrentBuilding->SetActorLocation(FVector(MouseLocation.X + Speed, MouseLocation.Y + Speed, 0.0f));
 	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 	UE_LOG(LogTemp, Display, TEXT("Moving"));
-
+	LastPos = MouseLocation;
 }
 
 void UHudWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
+	
 	if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
 	if (Character = PlayerController->GetPawn<ASnowed_InCharacter>(); !Character) return;
 
