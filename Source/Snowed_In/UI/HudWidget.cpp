@@ -11,6 +11,7 @@
 #include "TimerManager.h"
 #include "Engine/World.h"
 
+const FString UHudWidget::CANCEL_TEXT = FString(TEXT("Cancel"));
 const FString UHudWidget::TIER1_TEXT = FString(TEXT("Tier 1"));
 const FString UHudWidget::TIER2_TEXT = FString(TEXT("Tier 2"));
 const FString UHudWidget::TIER3_TEXT = FString(TEXT("Tier 3"));
@@ -72,6 +73,12 @@ void UHudWidget::HandleButtonBuyTier2Clicked()
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 2 Clicked!"));
 }
 
+void UHudWidget::HandleCancelButtonClicked()
+{
+	if (GameManager) GameManager->SetInBuildMode(false);
+	RemoveFromParent();
+}
+
 void UHudWidget::HandleButtonBuyTier3Clicked()
 {
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 3 Clicked!"));
@@ -104,7 +111,7 @@ void UHudWidget::HandleBuildingMovement()
 	UE_LOG(LogTemp, Display, TEXT("x: %s y: %s z: %s"), *FString::FromInt(Dir.Y), *FString::FromInt(Dir.X), *FString::FromInt(Dir.Z));
 
 	CurrentBuilding->SetActorLocation(CurrentBuilding->GetActorLocation() + Dir);
-	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
+	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
 	UE_LOG(LogTemp, Display, TEXT("Moving"));
 	LastPos = FVector(x, y, 0.0f);
 }
@@ -117,14 +124,16 @@ void UHudWidget::HandleBuildingAbort()
 
 void UHudWidget::HandleRightRotation()
 {
-	auto rota = CurrentBuilding->GetActorRotation();
-	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
-	UE_LOG(LogTemp, Display, TEXT("Rota Right"));
+	auto rota = CurrentBuilding->GetActorRotation().Euler();
+	rota.Z += 90;
+	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(rota));
 }
 
 void UHudWidget::HandleLeftRotation()
 {
-	UE_LOG(LogTemp, Display, TEXT("Rota Left"));
+	auto rota = CurrentBuilding->GetActorRotation().Euler();
+	rota.Z -= 90;
+	CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(rota));
 }
 
 void UHudWidget::NativeConstruct()
@@ -160,6 +169,9 @@ void UHudWidget::NativeConstruct()
 		ButtonBuyTier3->SetIsEnabled(!(iceCrystals < TIER3_COST));
 		ButtonBuyTier3->OnClicked.AddDynamic(this, &UHudWidget::HandleButtonBuyTier3Clicked);
 	}
+
+	if (ButtonCancel) ButtonCancel->OnClicked.AddDynamic(this, &UHudWidget::HandleCancelButtonClicked);
+	if (TextBlockCancel) TextBlockCancel->SetText(FText::FromString(CANCEL_TEXT));
 
 	GameManager->SetIceCrystals(55); //Test
 }

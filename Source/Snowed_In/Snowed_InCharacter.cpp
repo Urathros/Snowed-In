@@ -109,8 +109,8 @@ void ASnowed_InCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	{
 		EnhancedInputComponent->BindAction(ClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseClicked);
 		EnhancedInputComponent->BindAction(CancelClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseCanceled);
-		EnhancedInputComponent->BindAction(RightRotationInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleRightRotation);
-		EnhancedInputComponent->BindAction(LeftRotationInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleLeftRotation);
+		EnhancedInputComponent->BindAction(RightRotationInputAction, ETriggerEvent::Started, this, &ASnowed_InCharacter::HandleRightRotation);
+		EnhancedInputComponent->BindAction(LeftRotationInputAction, ETriggerEvent::Started, this, &ASnowed_InCharacter::HandleLeftRotation);
 	}
 	else
 	{

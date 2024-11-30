@@ -32,6 +32,9 @@ public:
 	UFUNCTION()
 	void HandleButtonBuyTier2Clicked();
 
+	UFUNCTION()
+	void HandleCancelButtonClicked();
+
 
 	UFUNCTION()
 	void HandleButtonBuyTier3Clicked();
@@ -55,6 +58,7 @@ public:
 	virtual void NativeDestruct() override;
 
 private:
+	static const FString CANCEL_TEXT;
 	static const FString TIER1_TEXT;
 	static const FString TIER2_TEXT;
 	static const FString TIER3_TEXT;
@@ -82,6 +86,14 @@ private:
 		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockIceCrystals", BindWidget, AllowPrivateAccess = "true"))
 		TObjectPtr<UTextBlock> TextBlockIceCrystals = nullptr;
+
+		
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonCancel", BindWidget, AllowPrivateAccess = "true"))
+		TObjectPtr<UButton> ButtonCancel = nullptr;
+		
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockCancel", BindWidget, AllowPrivateAccess = "true"))
+		TObjectPtr<UTextBlock> TextBlockCancel = nullptr;
 
 		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier1", BindWidget, AllowPrivateAccess = "true"))
