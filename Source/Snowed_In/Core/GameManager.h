@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GameManager.generated.h"
 
+DECLARE_DELEGATE(FHandleIceCrystalsChangedSignature);
+
 /**
  * 
  */
@@ -63,6 +65,10 @@ private:
 	// Counter of global ice crystals
 	uint32 IceCrystals = 0;
 
+
 	#pragma endregion
 	/*************************************************************************/
+
+public:
+	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;
 };

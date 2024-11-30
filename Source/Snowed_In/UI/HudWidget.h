@@ -22,7 +22,10 @@ class SNOWED_IN_API UHudWidget : public UUserWidget
 public:
 	UHudWidget(const FObjectInitializer& ObjectInitializer);
 
+	void HandleIceCrystalsChanged(void);
+
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 
 private:
 	static const FString TIER1_TEXT;

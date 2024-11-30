@@ -17,17 +17,43 @@ const uint32 UHudWidget::TIER3_COST = 5000;
 UHudWidget::UHudWidget(const FObjectInitializer& ObjectInitializer)
 	: UUserWidget(ObjectInitializer) {}
 
+void UHudWidget::HandleIceCrystalsChanged(void)
+{
+	if (!GameManager) return;
+
+	const auto&& iceCrystals = GameManager->GetIceCrystals();
+	if (TextBlockIceCrystals) TextBlockIceCrystals->SetText(FText::FromString(FString::FromInt(iceCrystals)));
+	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(!(iceCrystals < TIER1_COST));
+	if (ButtonBuyTier2) ButtonBuyTier2->SetIsEnabled(!(iceCrystals < TIER2_COST));
+	if (ButtonBuyTier3) ButtonBuyTier3->SetIsEnabled(!(iceCrystals < TIER3_COST));
+}
+
 void UHudWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	GameManager = UGameManager::Instantiate(*this);
+	if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
 
-	if(TextBlockIceCrystals) TextBlockIceCrystals->SetText(FText::FromString( FString::FromInt(GameManager->GetIceCrystals())));
+	GameManager->HandleIceCrystalsChangedDelegate.BindUObject(this, &UHudWidget::HandleIceCrystalsChanged);
+	const auto&& iceCrystals = GameManager->GetIceCrystals();
+	if(TextBlockIceCrystals) TextBlockIceCrystals->SetText(FText::FromString( FString::FromInt(iceCrystals)));
 	if (TextBlockNameTier1) TextBlockNameTier1->SetText(FText::FromString(TIER1_TEXT));
 	if (TextBlockNameTier2) TextBlockNameTier2->SetText(FText::FromString(TIER2_TEXT));
 	if(TextBlockNameTier3) TextBlockNameTier3->SetText(FText::FromString(TIER3_TEXT));
 	if (TextBlockBuyTier1) TextBlockBuyTier1->SetText(FText::FromString(FString::FromInt(TIER1_COST)));
 	if (TextBlockBuyTier2) TextBlockBuyTier2->SetText(FText::FromString(FString::FromInt(TIER2_COST)));
 	if(TextBlockBuyTier3) TextBlockBuyTier3->SetText(FText::FromString(FString::FromInt(TIER3_COST)));
+	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(!(iceCrystals < TIER1_COST));
+	if (ButtonBuyTier2) ButtonBuyTier2->SetIsEnabled(!(iceCrystals < TIER2_COST));
+	if (ButtonBuyTier3) ButtonBuyTier3->SetIsEnabled(!(iceCrystals < TIER3_COST));
+
+	//GameManager->SetIceCrystals(55); //Test
+}
+
+void UHudWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
+	GameManager->HandleIceCrystalsChangedDelegate.Unbind();
 }

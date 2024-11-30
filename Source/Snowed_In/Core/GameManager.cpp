@@ -54,29 +54,34 @@ auto UGameManager::GetIceCrystals(void) const -> const uint32
 auto UGameManager::SetIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
 {
 	IceCrystals = a_IceCrystals;
+	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
 }
 
 auto UGameManager::AddIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
 {
 	IceCrystals += a_IceCrystals;
+	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
 }
 
 auto UGameManager::SubstractIceCrystals(const uint32& a_IceCrystals) -> UGameManager&
 {
 	IceCrystals -= a_IceCrystals;
+	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
 }
 
 auto UGameManager::IncrementIceCrystals(void) -> UGameManager&
 {
 	IceCrystals++;
+	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
 }
 
 auto UGameManager::DecrementIceCrystals(void) -> UGameManager&
 {
 	IceCrystals--;
+	HandleIceCrystalsChangedDelegate.ExecuteIfBound();
 	return *this;
 }
