@@ -21,7 +21,7 @@ void AIngameHUD::HandleHudWidgetCreation()
 
 void AIngameHUD::BeginPlay()
 {
-    if (GameManager = UGameManager::Instantiate(*this)); !GameManager) return;
+    if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
     if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
 
     PlayerController->bShowMouseCursor = true;
