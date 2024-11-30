@@ -43,9 +43,12 @@ private:
 	const FString DEFAULT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
 	const FString CARROT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
 
+	const FString PARTICLES_PATH = "/Script/Niagara.NiagaraSystem'/Game/SnowedIn/Particles/NS_Shot.NS_Shot'";
+
 	const FString DEFAULT_COLLISION_PROFILE_NAME = "OverlapAllDynamic";
 
 	const float CollisionRadius = 50;
+	const float DieTime = 10.0f;
 	const FVector MeshScale = FVector(0.1f, 0.1f, 0.1f);
 	const FRotator MeshRotation = FRotator(-90, 0, 0);
 
@@ -60,6 +63,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UProjectileMovementComponent* Projectile = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* Particles = nullptr;
 
 	TObjectPtr<UStaticMesh> DefaultMeshPtr = {};
 	TObjectPtr<UStaticMesh> CarrotMeshPtr = {};

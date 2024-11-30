@@ -4,6 +4,7 @@
 #include "../Buildings/Tower.h"
 #include "Components/SphereComponent.h"
 #include "Enemy/Enemy.h"
+#include "Components/AudioComponent.h"
 #include "../Bullets/Bullet.h"
 
 // Sets default values
@@ -14,6 +15,12 @@ ATower::ATower()
 
 	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH);
 	auto mat = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH);
+
+	auto towerLvl1Sounds = ConstructorHelpers::FObjectFinder<USoundBase>(*TOWER_LVL1_SFX_PATH);
+	auto towerLvl2Sounds = ConstructorHelpers::FObjectFinder<USoundBase>(*TOWER_LVL2_SFX_PATH);
+	if (towerLvl2Sounds.Succeeded()) lvlTwoSounds = towerLvl2Sounds.Object;
+	auto towerLvl3Sounds = ConstructorHelpers::FObjectFinder<USoundBase>(*TOWER_LVL3_SFX_PATH);
+	if (towerLvl3Sounds.Succeeded()) lvlThreeSounds = towerLvl3Sounds.Object;
 
 	Visuals = CreateDefaultSubobject<UStaticMeshComponent>("Visuals");
 	if (mesh.Succeeded()) Visuals->SetStaticMesh(mesh.Object);
@@ -27,6 +34,10 @@ ATower::ATower()
 	PerceptionTrigger->OnComponentEndOverlap.AddDynamic(this, &ATower::OnEndOverlap);
 	PerceptionTrigger->SetupAttachment(Visuals);
 
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>("Sound Cue");
+	if (towerLvl1Sounds.Succeeded()) AudioComponent->SetSound(towerLvl1Sounds.Object);
+	AudioComponent->SetupAttachment(Visuals);
+
 	auto bullet = ConstructorHelpers::FClassFinder<ABullet>(*BULLET_PATH);
 	if (bullet.Succeeded()) BulletClass = bullet.Class;
 }
@@ -35,6 +46,9 @@ ATower::ATower()
 void ATower::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (AudioComponent) AudioComponent->Play();
+
 	Activate();
 
 	if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
@@ -51,6 +65,17 @@ void ATower::Activate(void)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s is now active"), *GetName()));
 	IsActive = true;
+	if (AudioComponent) AudioComponent->SetTriggerParameter("On Build");
+}
+
+void ATower::Upgrade(void)
+{
+	CurrentLvl++;
+
+	if (CurrentLvl == 2) AudioComponent->SetSound(lvlTwoSounds);
+	else AudioComponent->SetSound(lvlThreeSounds);
+
+	if (!AudioComponent->IsPlaying()) AudioComponent->Play();
 }
 
 void ATower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -83,6 +108,7 @@ void ATower::SpawnBullet(void)
 {
 	if (BulletClass)
 	{
+		if (AudioComponent) AudioComponent->SetTriggerParameter("On Shoot");
 		auto bullet = GetWorld()->SpawnActor<ABullet>(BulletClass, GetActorLocation() + FVector::UpVector * 125, GetActorRotation());
 		bullet->Init(BulletMoveSpeed, BulletDamage, EBulletMeshType::BMT_Default);
 	}

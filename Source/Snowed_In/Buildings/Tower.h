@@ -24,12 +24,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Activate(void);
+	void Upgrade(void);
+
+	FORCEINLINE int32 GetCurrentLevel(void) { return CurrentLvl; }
 
 private:
 	bool IsActive = false;
 
 	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Engine/BasicShapes/Cylinder.Cylinder'";
 	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
+
+	const FString TOWER_LVL1_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlOne.MS_TowerLvlOne'";
+	const FString TOWER_LVL2_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlTwo.MS_TowerLvlTwo'";
+	const FString TOWER_LVL3_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlThree.MS_TowerLvlThree'";
 
 	const FString BULLET_PATH = "/Script/CoreUObject.Class'/Script/Snowed_In.Bullet'";
 
@@ -48,6 +55,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* PerceptionTrigger = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* AudioComponent = nullptr;
+
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	float AttentionRadius = 1000.0f;
 
@@ -64,5 +74,10 @@ private:
 	int EnemiesInRangeCounter = 0;
 	FTimerHandle AttackTimerHandle = {};
 
+	int32 CurrentLvl = 1;
+
 	TSubclassOf<class ABullet> BulletClass = {};
+
+	USoundBase* lvlTwoSounds = nullptr;
+	USoundBase* lvlThreeSounds = nullptr;
 };

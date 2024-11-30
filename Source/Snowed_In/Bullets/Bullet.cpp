@@ -3,6 +3,8 @@
 
 #include "../Bullets/Bullet.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
 #include "Enemy/Enemy.h"
 
@@ -24,8 +26,11 @@ ABullet::ABullet()
 	Visual->SetupAttachment(Collision);
 
 	Projectile = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
-	Projectile->InitialSpeed = 500;
+	Projectile->InitialSpeed = MoveSpeed;
 	Projectile->ProjectileGravityScale = 0;
+
+	auto parts = ConstructorHelpers::FObjectFinder<UNiagaraSystem>(*PARTICLES_PATH);
+	if (parts.Succeeded()) Particles = parts.Object;
 
 	auto defaultMesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*DEFAULT_MESH_PATH);
 	if (defaultMesh.Succeeded()) DefaultMeshPtr = defaultMesh.Object;
@@ -42,6 +47,9 @@ void ABullet::Init(float a_moveSpeed, int32 a_dmg, EBulletMeshType a_meshType)
 {
 	MoveSpeed = a_moveSpeed;
 	Damage = a_dmg;
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, FString::Printf(TEXT("%f"), MoveSpeed));
+	Projectile->Velocity = FVector::RightVector * MoveSpeed;
 
 	InitMesh(a_meshType);
 }
@@ -88,6 +96,11 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (Particles)
+	{
+		auto NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(
+			Particles, Visual, NAME_None, FVector(0.f), FRotator(-90.f, 0.f, 0.f), EAttachLocation::KeepRelativeOffset, true);
+	}
 }
 
 // Called every frame
