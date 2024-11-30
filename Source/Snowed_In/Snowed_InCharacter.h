@@ -9,6 +9,8 @@
 
 DECLARE_DELEGATE(FHandleMouseClickedSignature);
 DECLARE_DELEGATE(FHandleMouseCanceledSignature);
+DECLARE_DELEGATE(FHandleRightRotationSignature);
+DECLARE_DELEGATE(FHandleLeftRotationSignature);
 
 UCLASS(Blueprintable)
 class ASnowed_InCharacter : public ACharacter
@@ -20,6 +22,8 @@ public:
 
 	void HandleMouseClicked(const struct FInputActionInstance& Instance);
 	void HandleMouseCanceled(const struct FInputActionInstance& Instance);
+	void HandleRightRotation(const struct FInputActionInstance& Instance);
+	void HandleLeftRotation(const struct FInputActionInstance& Instance);
 
 	virtual void BeginPlay() override;
 
@@ -38,6 +42,8 @@ private:
 	static const FString MAPPING_CTX_PATH;
 	static const FString CLICK_IA_PATH;
 	static const FString CANCEL_CLICK_IA_PATH;
+	static const FString ROTATE_RIGHT_IA_PATH;
+	static const FString ROTATE_LEFT_IA_PATH;
 
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -53,11 +59,19 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		class UInputAction* ClickInputAction;
 
-		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		class UInputAction* CancelClickInputAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputAction* RightRotationInputAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputAction* LeftRotationInputAction;
 
 public:
 	FHandleMouseClickedSignature HandleMouseClickedDelegate = nullptr;
 	FHandleMouseCanceledSignature HandleMouseCanceledDelegate = nullptr;
+	FHandleRightRotationSignature HandleRightRotationDelegate = nullptr;
+	FHandleLeftRotationSignature HandleLeftRotationDelegate = nullptr;
 };
 

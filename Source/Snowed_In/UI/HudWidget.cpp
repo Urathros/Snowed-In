@@ -56,6 +56,10 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 		Character->HandleMouseClickedDelegate.BindUObject(this, &UHudWidget::HandleMoveableDisabling);
 		Character->HandleMouseCanceledDelegate.Unbind();
 		Character->HandleMouseCanceledDelegate.BindUObject(this, &UHudWidget::HandleBuildingAbort);
+		Character->HandleRightRotationDelegate.Unbind();
+		Character->HandleRightRotationDelegate.BindUObject(this, &UHudWidget::HandleRightRotation);
+		Character->HandleLeftRotationDelegate.Unbind();
+		Character->HandleLeftRotationDelegate.BindUObject(this, &UHudWidget::HandleLeftRotation);
 	}
 
 	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
@@ -109,6 +113,18 @@ void UHudWidget::HandleBuildingAbort()
 {
 	if (CurrentBuilding) CurrentBuilding->Destroy();
 	if (ButtonBuyTier1) ButtonBuyTier1->SetIsEnabled(true);
+}
+
+void UHudWidget::HandleRightRotation()
+{
+	auto rota = CurrentBuilding->GetActorRotation();
+	//CurrentBuilding->SetActorRotation(FRotator::MakeFromEuler(MouseDirection));
+	UE_LOG(LogTemp, Display, TEXT("Rota Right"));
+}
+
+void UHudWidget::HandleLeftRotation()
+{
+	UE_LOG(LogTemp, Display, TEXT("Rota Left"));
 }
 
 void UHudWidget::NativeConstruct()

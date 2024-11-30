@@ -19,6 +19,8 @@
 const FString ASnowed_InCharacter::MAPPING_CTX_PATH = FString(TEXT("InputMappingContext'/Game/SnowedIn/Input/IMC_Pawn'"));
 const FString ASnowed_InCharacter::CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseClick'"));
 const FString ASnowed_InCharacter::CANCEL_CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseCancel'"));
+const FString ASnowed_InCharacter::ROTATE_RIGHT_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_RotateRight'"));
+const FString ASnowed_InCharacter::ROTATE_LEFT_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_RotateLeft'"));
 
 ASnowed_InCharacter::ASnowed_InCharacter()
 {
@@ -55,6 +57,8 @@ ASnowed_InCharacter::ASnowed_InCharacter()
 
 	ClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CLICK_IA_PATH).Object;
 	CancelClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CANCEL_CLICK_IA_PATH).Object;
+	RightRotationInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*ROTATE_RIGHT_IA_PATH).Object;
+	LeftRotationInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*ROTATE_LEFT_IA_PATH).Object;
 	MappingContext = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*MAPPING_CTX_PATH).Object;
 }
 
@@ -68,6 +72,17 @@ void ASnowed_InCharacter::HandleMouseClicked(const FInputActionInstance& Instanc
 void ASnowed_InCharacter::HandleMouseCanceled(const FInputActionInstance& Instance)
 {
 	HandleMouseCanceledDelegate.ExecuteIfBound();
+}
+
+void ASnowed_InCharacter::HandleRightRotation(const FInputActionInstance& Instance)
+{
+	UE_LOG(LogTemp, Display, TEXT("Rotation"));
+	HandleRightRotationDelegate.ExecuteIfBound();
+}
+
+void ASnowed_InCharacter::HandleLeftRotation(const FInputActionInstance& Instance)
+{
+	HandleLeftRotationDelegate.ExecuteIfBound();
 }
 
 void ASnowed_InCharacter::BeginPlay()
@@ -94,6 +109,8 @@ void ASnowed_InCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	{
 		EnhancedInputComponent->BindAction(ClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseClicked);
 		EnhancedInputComponent->BindAction(CancelClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseCanceled);
+		EnhancedInputComponent->BindAction(RightRotationInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleRightRotation);
+		EnhancedInputComponent->BindAction(LeftRotationInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleLeftRotation);
 	}
 	else
 	{
