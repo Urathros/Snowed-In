@@ -33,13 +33,23 @@ ATower::ATower()
 	PerceptionTrigger->OnComponentBeginOverlap.AddDynamic(this, &ATower::OnBeginOverlap);
 	PerceptionTrigger->OnComponentEndOverlap.AddDynamic(this, &ATower::OnEndOverlap);
 	PerceptionTrigger->SetupAttachment(Visuals);
-
+	
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>("Sound Cue");
 	if (towerLvl1Sounds.Succeeded()) AudioComponent->SetSound(towerLvl1Sounds.Object);
 	AudioComponent->SetupAttachment(Visuals);
 
 	auto bullet = ConstructorHelpers::FClassFinder<ABullet>(*BULLET_PATH);
 	if (bullet.Succeeded()) BulletClass = bullet.Class;
+	
+	// Nav Modifier
+	NavModComp = CreateDefaultSubobject<UNavModifierComponent>("Nav Modifier");
+	NavModComp->SetAreaClass(ConstructorHelpers::FClassFinder<UNavArea>(*NAV_AREA_CLASS).Class);
+	NavModComp->FailsafeExtent = FailsafeExtentSize;
+
+	// Disable Nav Affect from other Components
+	Visuals->SetCanEverAffectNavigation(false);
+	PerceptionTrigger->SetCanEverAffectNavigation(false);
+	AudioComponent->SetCanEverAffectNavigation(false);
 }
 
 // Called when the game starts or when spawned

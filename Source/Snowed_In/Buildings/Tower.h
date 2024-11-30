@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NavModifierComponent.h"
 #include "Tower.generated.h"
 
 UCLASS()
@@ -42,6 +43,8 @@ private:
 
 	const FString DEFAULT_COLLISION_PROFILE_NAME = "OverlapAllDynamic";
 
+	const FString NAV_AREA_CLASS = "/Script/CoreUObject.Class'/Script/NavigationSystem.NavArea_Null'";
+
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
@@ -73,6 +76,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int EnemiesInRangeCounter = 0;
 	FTimerHandle AttackTimerHandle = {};
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	class UNavModifierComponent* NavModComp = nullptr;
+
+	FVector FailsafeExtentSize = FVector(50.0f, 50.0f, 50.0f);
 
 	int32 CurrentLvl = 1;
 
