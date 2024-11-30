@@ -22,7 +22,19 @@ class SNOWED_IN_API UHudWidget : public UUserWidget
 public:
 	UHudWidget(const FObjectInitializer& ObjectInitializer);
 
-	void HandleIceCrystalsChanged(void);
+	UFUNCTION()
+	void HandleIceCrystalsChanged();
+
+	UFUNCTION()
+	void HandleButtonBuyTier1Clicked(); 
+
+
+	UFUNCTION()
+	void HandleButtonBuyTier2Clicked();
+
+
+	UFUNCTION()
+	void HandleButtonBuyTier3Clicked();
 
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
@@ -36,6 +48,8 @@ private:
 	static const uint32 TIER2_COST;
 	static const uint32 TIER3_COST;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Player Controller", AllowPrivateAccess = "true"))
+	APlayerController* PlayerController = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Game Manager", AllowPrivateAccess = "true"))
 	class UGameManager* GameManager = nullptr;
