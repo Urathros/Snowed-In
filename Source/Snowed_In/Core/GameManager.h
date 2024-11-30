@@ -8,6 +8,7 @@
 
 DECLARE_DELEGATE(FHandleIceCrystalsChangedSignature);
 DECLARE_DELEGATE(FHandleWaveClearedSignature);
+DECLARE_DELEGATE(FHandleWaveChangedSignature);
 DECLARE_DELEGATE(FHandleInBuildChangedSignature);
 
 class AEnemySpawner;
@@ -56,6 +57,9 @@ public:
 	// Decrement the ice crystal counter
 	auto DecrementIceCrystals(void) -> UGameManager&;
 
+	auto GetWave(void) const -> const uint32;
+	auto SetWave(const uint32& a_Wave) -> UGameManager&;
+	auto IncrementWave(void) -> UGameManager&;
 	auto SetWaveSpawnInProgress(const bool& a_bInProgress) -> UGameManager&;
 	auto GetWaveSpawnInProgress(void) const -> const bool;
 
@@ -82,6 +86,9 @@ private:
 	// Counter of global ice crystals
 	uint32 IceCrystals = 0;
 
+	// Counter of current wave
+	uint32 CurrentWave = 0;
+
 	// Whether a wave is currently in the spawning phase
 	bool bWaveSpawnInProgress = false;
 
@@ -99,5 +106,6 @@ private:
 public:
 	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;
 	FHandleWaveClearedSignature HandleWaveClearedDelegate = nullptr;
+	FHandleWaveChangedSignature HandleWaveChangedDelegate = nullptr;
 	FHandleInBuildChangedSignature FHandleInBuildChangedDelegate = nullptr;
 };

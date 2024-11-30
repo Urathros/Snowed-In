@@ -9,7 +9,6 @@ AEnemySpawner::AEnemySpawner()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -20,23 +19,28 @@ void AEnemySpawner::BeginPlay()
 	if (WaveData) MaxWaveCount = WaveData->GetRowMap().Num();
 	if (Enemies.Num() != 3) GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Enemies need to be three");
 
-	StartNextWave();
-
 	GM = UGameManager::Instantiate(*this);
 	if (GM) GM->SetEnemySpawner(this);
+
+	StartNextWave();
 }
 
 // Called every frame
 void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AEnemySpawner::StartNextWave(void)
 {
 	CurrentWave++;
-	if (GM) GM->SetWaveSpawnInProgress(true);
+	if (GM)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Wave %d"), CurrentWave);
+		GM->SetWaveSpawnInProgress(true);
+		GM->SetWave(CurrentWave);
+		UE_LOG(LogTemp, Warning, TEXT("Wave %d"), GM->GetWave());
+	}
 
 	if (CurrentWave > MaxWaveCount)
 	{

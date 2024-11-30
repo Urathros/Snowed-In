@@ -7,7 +7,7 @@
 // Sets default values
 ACrystalSpawnManager::ACrystalSpawnManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
@@ -17,8 +17,13 @@ ACrystalSpawnManager::ACrystalSpawnManager()
 void ACrystalSpawnManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &ACrystalSpawnManager::SpawnCrystal, SpawnRate, true);
+
+	// Get the GameManager
+	if (GM = UGameManager::Instantiate(*this); !GM) UE_LOG(LogTemp, Error, TEXT("IceCrystalManager: No GameManager was found!"));
+	GM->HandleWaveChangedDelegate.BindUObject(this, &ACrystalSpawnManager::StartSpawnTimer);
+	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StartSpawnTimerBind"));
+	GM->HandleWaveClearedDelegate.BindUObject(this, &ACrystalSpawnManager::StopSpawnTimer);
+	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StopSpawnTimerBind"));
 }
 
 // Called every frame
@@ -27,21 +32,43 @@ void ACrystalSpawnManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ACrystalSpawnManager::StartSpawnTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StartSpawnTimer"));
+	GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &ACrystalSpawnManager::SpawnCrystal, SpawnRate, true);
+}
+
+void ACrystalSpawnManager::StopSpawnTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: StopSpawnTimer"));
+	GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
+}
+
 void ACrystalSpawnManager::SpawnCrystal()
 {
-	if (SpawnPool.Num() < MaxCrystals && SpawnPoints.Num() > 0)
+	if (GM && GM->GetWaveSpawnInProgress() == false)
 	{
-		int32 SpawnIndex = FMath::RandRange(0, SpawnPoints.Num() - 1);
-		FVector SpawnLocation = SpawnPoints[SpawnIndex];
+		CrystalValue = FMath::RoundToInt((GM->GetWave() * CrystalBaseValue) * CrystalMultiplierPerWave);
 
-		NewCrystal = GetWorld()->SpawnActor<AIceCrystal>(AIceCrystal::StaticClass(), SpawnLocation, FRotator::ZeroRotator);
-		if (NewCrystal)
+		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Wave: %d"), GM->GetWave());
+		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalBaseValue: %d"), CrystalBaseValue);
+		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalMultiplierPerWave: %f"), CrystalMultiplierPerWave);
+		// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: CrystalValue: %d"), CrystalValue);
+
+		if (SpawnPool.Num() < MaxCrystals && SpawnPoints.Num() > 0)
 		{
-			NewCrystal->InitializeCrystal(CrystalValue, CrystalLifetime, ReductionDelay);
-			SpawnPool.Add(NewCrystal);
-			
-			// Remove Crystal from the pool when its lifetime has expired
-			NewCrystal->OnDestroyed.AddDynamic(this, &ACrystalSpawnManager::RemoveCrystal);
+			int32 SpawnIndex = FMath::RandRange(0, SpawnPoints.Num() - 1);
+			FVector SpawnLocation = SpawnPoints[SpawnIndex];
+
+			NewCrystal = GetWorld()->SpawnActor<AIceCrystal>(AIceCrystal::StaticClass(), SpawnLocation, FRotator::ZeroRotator);
+			if (NewCrystal)
+			{
+				NewCrystal->InitializeCrystal(CrystalValue, CrystalLifetime, ReductionDelay);
+				SpawnPool.Add(NewCrystal);
+
+				// Remove Crystal from the pool when its lifetime has expired
+				NewCrystal->OnDestroyed.AddDynamic(this, &ACrystalSpawnManager::RemoveCrystal);
+			}
 		}
 	}
 }

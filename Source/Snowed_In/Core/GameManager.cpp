@@ -4,6 +4,7 @@
 #include "../Core/GameManager.h"
 #include "Enemy/EnemySpawner.h"
 #include <Kismet/GameplayStatics.h>
+#include "GameManager.h"
 
 auto UGameManager::GetGameInstance(const UObject& a_target) -> UGameInstance* const
 {
@@ -87,7 +88,26 @@ auto UGameManager::DecrementIceCrystals(void) -> UGameManager&
 	return *this;
 }
 
-auto UGameManager::SetWaveSpawnInProgress(const bool& a_bInProgress) -> UGameManager&
+auto UGameManager::GetWave(void) const -> const uint32
+{
+    return CurrentWave;
+}
+
+auto UGameManager::SetWave(const uint32& a_Wave) -> UGameManager&
+{
+    CurrentWave = a_Wave;
+	HandleWaveChangedDelegate.ExecuteIfBound();
+	return *this;
+}
+
+auto UGameManager::IncrementWave(void) -> UGameManager&
+{
+	CurrentWave++;
+	HandleWaveChangedDelegate.ExecuteIfBound();
+	return *this;
+}
+
+auto UGameManager::SetWaveSpawnInProgress(const bool& a_bInProgress)->UGameManager&
 {
 	bWaveSpawnInProgress = a_bInProgress;
 	return *this;

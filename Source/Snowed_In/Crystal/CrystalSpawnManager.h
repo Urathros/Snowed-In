@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "IceCrystal.h"
+#include "../Core/GameManager.h"
 #include "CrystalSpawnManager.generated.h"
 
 UCLASS()
@@ -29,11 +30,19 @@ private:
 	void SpawnCrystal();
 
 	UFUNCTION()
+	void StartSpawnTimer();
+
+	UFUNCTION()
+	void StopSpawnTimer();
+
+	UFUNCTION()
 	void RemoveCrystal(AActor* a_Crystal);
 
 #pragma region UPROPERTY
 
 	// Components
+	UGameManager* GM = nullptr;
+
 	FTimerHandle SpawnTimerHandle;
 	AIceCrystal* NewCrystal = nullptr;
 
@@ -51,7 +60,13 @@ private:
 	float SpawnRate = 5.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
-	int CrystalValue = 10;
+	int CrystalBaseValue = 10;
+	
+	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
+	int CrystalValue = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
+	float CrystalMultiplierPerWave = 1.5f;
 
 	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
 	float CrystalLifetime = 10.0f;

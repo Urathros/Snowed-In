@@ -58,7 +58,6 @@ void AIceCrystal::BeginPlay()
 	Super::BeginPlay();
 
 	// Get the GameManager
-	
 	if(GM = UGameManager::Instantiate(*this); !GM) UE_LOG(LogTemp, Error, TEXT("IceCrystal: No GameManager was found!"));
 }
 
@@ -108,5 +107,5 @@ void AIceCrystal::ReduceValue()
 	if (Value <= 0) Destroy();
 	else Value--;
 
-	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Value %d"), Value);
+	// UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Value %d"), Value);
 }
