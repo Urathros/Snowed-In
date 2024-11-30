@@ -12,10 +12,14 @@ AShed::AShed()
 	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH);
 	auto mat = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH);
 
-	meshComp = CreateDefaultSubobject<UStaticMeshComponent>("Visuals");
-	SetRootComponent(meshComp);
-	if (mesh.Succeeded()) meshComp->SetStaticMesh(mesh.Object);
-	if (mat.Succeeded()) meshComp->SetMaterial(0, mat.Object);
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("Visuals");
+	SetRootComponent(MeshComp);
+	if (mesh.Succeeded()) MeshComp->SetStaticMesh(mesh.Object);
+	if (mat.Succeeded()) MeshComp->SetMaterial(0, mat.Object);
+
+	EnemyTarget = CreateDefaultSubobject<USceneComponent>("EnemyTarget");
+	EnemyTarget->SetRelativeLocation(EnemyTargetPos);
+	EnemyTarget->SetupAttachment(MeshComp);
 }
 
 // Called when the game starts or when spawned

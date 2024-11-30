@@ -26,6 +26,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	bool TakeDamage(int32 Dmg);
+
 private:
 	// Paths
 	const FString MESH_PATH = "/Script/Engine.SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple.SKM_Manny_Simple'";
@@ -34,4 +36,7 @@ private:
 
 	const float MOVE_SPEED = 200.0f;
 	const float SLOWED_MOVE_SPEED = 75.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	int32 HP = 1;
 };

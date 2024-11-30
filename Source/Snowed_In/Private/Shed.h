@@ -15,6 +15,9 @@ public:
 	// Sets default values for this actor's properties
 	AShed();
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE FVector GetEnemyTargetPos() { return GetActorLocation() + EnemyTarget->GetRelativeLocation(); }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -25,9 +28,15 @@ public:
 
 private:
 	// Paths
-	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Game/Models/ShedPlaceholder.ShedPlaceholder'";
+	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_LogCabin.SM_LogCabin'";
 	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
 
+	const FVector EnemyTargetPos = FVector(-200, 0, 0);
+
 	// Components
-	UStaticMeshComponent* meshComp = nullptr;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* MeshComp = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	USceneComponent* EnemyTarget = nullptr;
 };

@@ -37,10 +37,13 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	FTimerHandle handle = {};
-	if (const auto shed = UGameplayStatics::GetActorOfClass(GWorld, AShed::StaticClass()); shed)
+	if (const auto ShedActor = UGameplayStatics::GetActorOfClass(GWorld, AShed::StaticClass()); ShedActor)
 	{
-		if (auto ctrl = GetController<AEnemyController>(); ctrl) ctrl->MoveToPoint(shed->GetActorLocation());
-		else GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "No Controller (of type AEnemyController");
+		if (const auto Shed = Cast<AShed>(ShedActor); Shed)
+		{
+			if (auto ctrl = GetController<AEnemyController>(); ctrl) ctrl->MoveToPoint(Shed->GetEnemyTargetPos());
+			else GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "No Controller (of type AEnemyController");
+		}
 	}
 }
 
@@ -55,4 +58,19 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+bool AEnemy::TakeDamage(int32 Dmg)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("%s took %d damage"), *GetName(), Dmg));
+	HP = FMath::Clamp(HP - Dmg, 0, HP);
+	if (HP == 0)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("%s died"), *GetName()));
+		//TODO: Add Particles and put Destroy on Delay (make mesh invisible instead)
+		Destroy();
+		return true;
+	}
+
+	return false;
 }
