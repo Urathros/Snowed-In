@@ -49,7 +49,8 @@ void ABullet::Init(float a_moveSpeed, int32 a_dmg, EBulletMeshType a_meshType)
 	Damage = a_dmg;
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, FString::Printf(TEXT("%f"), MoveSpeed));
-	Projectile->Velocity = FVector::RightVector * MoveSpeed;
+	FVector vel = FVector::RightVector * MoveSpeed;
+	Projectile->Velocity = GetActorRotation().RotateVector(vel);
 
 	InitMesh(a_meshType);
 }

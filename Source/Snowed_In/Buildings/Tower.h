@@ -11,8 +11,8 @@ UCLASS()
 class ATower : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATower();
 
@@ -20,7 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -45,11 +45,30 @@ private:
 
 	const FString NAV_AREA_CLASS = "/Script/CoreUObject.Class'/Script/NavigationSystem.NavArea_Null'";
 
+#pragma region Level Stats
+	const float LVL_ONE_ATTENTION_RADIUS = 1000.0f;
+	const float LVL_TWO_ATTENTION_RADIUS = 1000.0f;
+	const float LVL_THREE_ATTENTION_RADIUS = 500.0f;
+
+	const float LVL_ONE_FIRE_RATE = 1.0f;
+	const float LVL_TWO_FIRE_RATE = 2.0f;
+	const float LVL_THREE_FIRE_RATE = 5.0f;
+
+	const float LVL_ONE_ROTATION_SPEED = 0.0f;
+	const float LVL_TWO_ROTATION_SPEED = 0.0f;
+	const float LVL_THREE_ROTATION_SPEED = 75.0f;
+
+	const int32 LVL_ONE_BULLET_DAMAGE = 1;
+	const int32 LVL_TWO_BULLET_DAMAGE = 1;
+	const int32 LVL_THREE_BULLET_DAMAGE = 1;
+#pragma endregion
+
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	void SetStats(void);
 	void SpawnBullet(void);
 
 	UPROPERTY(EditAnywhere)
@@ -63,6 +82,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	float AttentionRadius = 1000.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	float RotationSpeed = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	float FireRate = 1.0f;

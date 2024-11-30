@@ -61,7 +61,7 @@ void ATower::BeginPlay()
 
 	//Activate();
 
-	if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
+	SetStats();
 }
 
 // Called every frame
@@ -69,6 +69,12 @@ void ATower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (RotationSpeed != 0)
+	{
+		auto rotation = GetActorRotation();
+		rotation.Add(0.0f, RotationSpeed * DeltaTime, 0.0f);
+		SetActorRotation(rotation);
+	}
 }
 
 void ATower::Activate(void)
@@ -84,15 +90,13 @@ void ATower::Upgrade(void)
 {
 	CurrentLvl++;
 
-	if (CurrentLvl == 2) AudioComponent->SetSound(lvlTwoSounds);
-	else AudioComponent->SetSound(lvlThreeSounds);
+	SetStats();
 
 	if (!AudioComponent->IsPlaying()) AudioComponent->Play();
 }
 
 void ATower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s collided with %s"), *GetName(), *OtherActor->GetName()));
 	if (auto enemy = Cast<AEnemy>(OtherActor); enemy)
 	{
 		EnemiesInRangeCounter++;
@@ -105,7 +109,6 @@ void ATower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 
 void ATower::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s End Overlap"), *OtherActor->GetName()));
 	if (auto enemy = Cast<AEnemy>(OtherActor); enemy)
 	{
 		EnemiesInRangeCounter--;
@@ -116,12 +119,55 @@ void ATower::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 	}
 }
 
+void ATower::SetStats(void)
+{
+	switch (CurrentLvl)
+	{
+	case 1:
+		AttentionRadius = LVL_ONE_ATTENTION_RADIUS;
+		if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
+
+		FireRate = LVL_ONE_FIRE_RATE;
+
+		RotationSpeed = LVL_ONE_ROTATION_SPEED;
+
+		BulletDamage = LVL_ONE_BULLET_DAMAGE;
+		break;
+
+	case 2:
+		AttentionRadius = LVL_TWO_ATTENTION_RADIUS;
+		if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
+
+		FireRate = LVL_TWO_FIRE_RATE;
+
+		RotationSpeed = LVL_TWO_ROTATION_SPEED;
+
+		BulletDamage = LVL_TWO_BULLET_DAMAGE;
+		break;
+
+	case 3:
+		AttentionRadius = LVL_THREE_ATTENTION_RADIUS;
+		if (PerceptionTrigger) PerceptionTrigger->SetSphereRadius(AttentionRadius);
+
+		FireRate = LVL_THREE_FIRE_RATE;
+
+		RotationSpeed = LVL_THREE_ROTATION_SPEED;
+
+		BulletDamage = LVL_THREE_BULLET_DAMAGE;
+		break;
+
+	default:
+		break;
+	}
+}
+
 void ATower::SpawnBullet(void)
 {
 	if (BulletClass)
 	{
 		if (AudioComponent) AudioComponent->SetTriggerParameter("On Shoot");
 		auto bullet = GetWorld()->SpawnActor<ABullet>(BulletClass, GetActorLocation() + FVector::UpVector * 125, GetActorRotation());
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Magenta, FString::Printf(TEXT("Rot: %lg, %lg, %lg"), GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll));
 		bullet->Init(BulletMoveSpeed, BulletDamage, EBulletMeshType::BMT_Default);
 	}
 }
