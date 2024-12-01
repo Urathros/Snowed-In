@@ -16,6 +16,26 @@ class SNOWED_IN_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+
+public:
+	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);
+
+	UFUNCTION()
+	void HandleGameStart();
+
+	UFUNCTION()
+	void HandleOptionsShowing();
+
+	UFUNCTION()
+	void HandleCreditsShowing();
+
+	UFUNCTION()
+	void HandleGameExit();
+
+
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonStart", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonStart = nullptr;
