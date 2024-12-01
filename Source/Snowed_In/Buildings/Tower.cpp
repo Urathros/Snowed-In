@@ -13,7 +13,13 @@ ATower::ATower()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH);
+	auto mesh1 = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_LVL1_PATH);
+	if (mesh1.Succeeded()) lvlOneMesh = mesh1.Object;
+	auto mesh2 = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_LVL2_PATH);
+	if (mesh2.Succeeded()) lvlTwoMesh = mesh2.Object;
+	auto mesh3 = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_LVL3_PATH);
+	if (mesh3.Succeeded()) lvlThreeMesh = mesh3.Object;
+
 	auto mat = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH);
 
 	auto towerLvl1Sounds = ConstructorHelpers::FObjectFinder<USoundBase>(*TOWER_LVL1_SFX_PATH);
@@ -23,7 +29,7 @@ ATower::ATower()
 	if (towerLvl3Sounds.Succeeded()) lvlThreeSounds = towerLvl3Sounds.Object;
 
 	Visuals = CreateDefaultSubobject<UStaticMeshComponent>("Visuals");
-	if (mesh.Succeeded()) Visuals->SetStaticMesh(mesh.Object);
+	if (lvlOneMesh) Visuals->SetStaticMesh(lvlOneMesh);
 	if (mat.Succeeded()) Visuals->SetMaterial(0, mat.Object);
 	SetRootComponent(Visuals);
 
@@ -75,13 +81,18 @@ void ATower::Tick(float DeltaTime)
 		rotation.Add(0.0f, RotationSpeed * DeltaTime, 0.0f);
 		SetActorRotation(rotation);
 	}
+
+	if (DoUpgrade)
+	{
+		DoUpgrade = false;
+		Upgrade();
+	}
 }
 
 void ATower::Activate(void)
 {
 	if (IsActive) return;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Magenta, FString::Printf(TEXT("%s is now active"), *GetName()));
 	IsActive = true;
 	if (AudioComponent) AudioComponent->SetTriggerParameter("On Build");
 }
@@ -132,6 +143,8 @@ void ATower::SetStats(void)
 		RotationSpeed = LVL_ONE_ROTATION_SPEED;
 
 		BulletDamage = LVL_ONE_BULLET_DAMAGE;
+
+		if (lvlOneMesh) Visuals->SetStaticMesh(lvlOneMesh);
 		break;
 
 	case 2:
@@ -143,6 +156,8 @@ void ATower::SetStats(void)
 		RotationSpeed = LVL_TWO_ROTATION_SPEED;
 
 		BulletDamage = LVL_TWO_BULLET_DAMAGE;
+
+		if (lvlTwoMesh) Visuals->SetStaticMesh(lvlTwoMesh);
 		break;
 
 	case 3:
@@ -154,6 +169,8 @@ void ATower::SetStats(void)
 		RotationSpeed = LVL_THREE_ROTATION_SPEED;
 
 		BulletDamage = LVL_THREE_BULLET_DAMAGE;
+
+		if (lvlThreeMesh) Visuals->SetStaticMesh(lvlThreeMesh);
 		break;
 
 	default:
@@ -167,7 +184,6 @@ void ATower::SpawnBullet(void)
 	{
 		if (AudioComponent) AudioComponent->SetTriggerParameter("On Shoot");
 		auto bullet = GetWorld()->SpawnActor<ABullet>(BulletClass, GetActorLocation() + FVector::UpVector * 125, GetActorRotation());
-		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Magenta, FString::Printf(TEXT("Rot: %lg, %lg, %lg"), GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll));
 		bullet->Init(BulletMoveSpeed, BulletDamage, EBulletMeshType::BMT_Default);
 	}
 }

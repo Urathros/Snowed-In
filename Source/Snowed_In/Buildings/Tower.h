@@ -32,7 +32,9 @@ public:
 private:
 	bool IsActive = false;
 
-	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Engine/BasicShapes/Cylinder.Cylinder'";
+	const FString MESH_LVL1_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_SnowMan_Bene_Lvl1.SMK_Snowman_Gang_GameJam_SnowMan_Bene_Lvl1'";
+	const FString MESH_LVL2_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_SnowMan_Nepomuk_Lvl2.SMK_Snowman_Gang_GameJam_SnowMan_Nepomuk_Lvl2'";
+	const FString MESH_LVL3_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_Snowman_Sepp_Lvl3.SMK_Snowman_Gang_GameJam_Snowman_Sepp_Lvl3'";
 	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
 
 	const FString TOWER_LVL1_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlOne.MS_TowerLvlOne'";
@@ -96,6 +98,9 @@ private:
 	int32 BulletMoveSpeed = 1000;
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
+	bool DoUpgrade = false;
+
+	UPROPERTY(EditAnywhere, Category = "Stats")
 	int EnemiesInRangeCounter = 0;
 	FTimerHandle AttackTimerHandle = {};
 
@@ -108,6 +113,11 @@ private:
 
 	TSubclassOf<class ABullet> BulletClass = {};
 
+	USoundBase* lvlOneSounds = nullptr;
 	USoundBase* lvlTwoSounds = nullptr;
 	USoundBase* lvlThreeSounds = nullptr;
+
+	UStaticMesh* lvlOneMesh = nullptr;
+	UStaticMesh* lvlTwoMesh = nullptr;
+	UStaticMesh* lvlThreeMesh = nullptr;
 };
