@@ -38,26 +38,31 @@ private:
 	UFUNCTION()
 	void RemoveCrystal(AActor* a_Crystal);
 
-#pragma region UPROPERTY
+	UFUNCTION(CallInEditor)
+	void ShowSpawnPositions();
+
+	void RenderSpawnPositions();
 
 	// Components
 	UGameManager* GM = nullptr;
 
 	FTimerHandle SpawnTimerHandle;
+
 	AIceCrystal* NewCrystal = nullptr;
 
+#pragma region UPROPERTY
+	// Properties
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TArray<AIceCrystal*> SpawnPool;
 
-	// Properties
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
+	UPROPERTY(EditAnywhere, Category = "Spawn Properties", META = (MakeEditWidget = true))
 	TArray<FVector> SpawnPoints;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
 	int MaxCrystals = 10;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	float SpawnRate = 5.0f;
+	float SpawnRate = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Crystal Properties")
 	int CrystalBaseValue = 10;

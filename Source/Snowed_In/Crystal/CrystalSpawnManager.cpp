@@ -85,3 +85,17 @@ void ACrystalSpawnManager::RemoveCrystal(AActor* a_Crystal)
 	// UE_LOG the destroyed crystal name
 	UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Destroyed: %s"), *a_Crystal->GetName());
 }
+
+void ACrystalSpawnManager::ShowSpawnPositions()
+{
+	if (bDebug) GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &ACrystalSpawnManager::RenderSpawnPositions, 1.0f, true);
+	else GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
+}
+
+void ACrystalSpawnManager::RenderSpawnPositions()
+{
+	for (FVector SpawnPoint : SpawnPoints)
+	{
+		DrawDebugSphere(GetWorld(), SpawnPoint, 25.0f, 25, FColor::Blue, false, 1, 0, 1);
+	}
+}

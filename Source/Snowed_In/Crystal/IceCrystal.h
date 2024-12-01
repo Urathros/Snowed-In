@@ -32,34 +32,30 @@ private:
 	// Functions
 	UFUNCTION()
 	void EventHit(UPrimitiveComponent* a_pOverlappedComponent, AActor* a_pOtherActor,
-		UPrimitiveComponent* a_pOtherComp, int32 a_OtherBodyIndex, bool bFromSweep,
-		const FHitResult& a_SweepResult);
+					UPrimitiveComponent* a_pOtherComp, int32 a_OtherBodyIndex, bool bFromSweep,
+					const FHitResult& a_SweepResult);
 
 	void ReduceValue();
 
+
 	// Components
 	UGameManager* GM = nullptr;
-
 	FTimerHandle ValueTimerHandle;
 	FTimerHandle LifeSpanTimerHandle;
-
-	UPROPERTY(EditAnywhere, Category = "Components")
+	USphereComponent* CrystalMeshBounds = nullptr;
 	USphereComponent* CrystalHitbox = nullptr;
-
-	UPROPERTY(EditAnywhere, Category = "Components")
 	UStaticMeshComponent* SMCrystal = nullptr;
 
-	// Properties
-	UPROPERTY(EditAnywhere, Category = "Attributes")
+	// Variables
 	int Value = 10;
-
-	UPROPERTY(EditAnywhere, Category = "Attributes")
 	float Lifetime = 10.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Attributes")
 	float ReductionDelay = 1.0f;
+	FVector RotationSpeed = FVector(0.0f, 50.0f, 50.0f);
+	float AlphaHeight = 10.0f;
+	float RunningTime = 0.0f;
 
 	// Constants
-	const float CRYSTAL_HITBOX_SIZE = 50.0f;
-	FString SM_CRYSTAL_PATH = TEXT("/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_Crystal_PlaceHolder.SM_Crystal_PlaceHolder'");
+	const float CRYSTAL_MESH_BOUND_SIZE = 50.0f;
+	const float CRYSTAL_HITBOX_SIZE = 55.0f;
+	FString SM_CRYSTAL_PATH = TEXT("/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_IceCrystal.SM_IceCrystal'");
 };

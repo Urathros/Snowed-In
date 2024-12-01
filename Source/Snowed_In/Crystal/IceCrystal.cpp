@@ -11,18 +11,24 @@ AIceCrystal::AIceCrystal()
 
 	// Create the crystals hitbox and mesh
 	SMCrystal = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SMCrystal"));
+	CrystalMeshBounds = CreateDefaultSubobject<USphereComponent>(TEXT("CrystalMeshBounds"));
 	CrystalHitbox = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 
 	// Set the Static Mesh for the crystal
 	SMCrystal->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*SM_CRYSTAL_PATH).Object);
 
 	// Attach the components
-	RootComponent = SMCrystal;
+	RootComponent = CrystalMeshBounds;
+	SMCrystal->SetupAttachment(RootComponent);
 	CrystalHitbox->SetupAttachment(RootComponent);
 
 	// Gravity
-	SMCrystal->SetSimulatePhysics(true);
-	SMCrystal->SetEnableGravity(true);
+	CrystalMeshBounds->SetSimulatePhysics(true);
+	CrystalMeshBounds->SetEnableGravity(true);
+
+	// Mesh Bounds
+	CrystalMeshBounds->SetSphereRadius(CRYSTAL_MESH_BOUND_SIZE);
+	CrystalMeshBounds->SetCollisionProfileName(TEXT("BlockAll"));
 
 	// Collision
 	CrystalHitbox->SetSphereRadius(CRYSTAL_HITBOX_SIZE);
@@ -34,8 +40,12 @@ AIceCrystal::AIceCrystal()
 	// Bind the hit event
 	CrystalHitbox->OnComponentBeginOverlap.AddDynamic(this, &AIceCrystal::EventHit);
 
+	// Set Actor Scale
+	SetActorScale3D(FVector(1.5f, 1.5f, 1.5f));
+
 #if WITH_EDITOR
 	// Make the hitbox visible in the editor
+	CrystalMeshBounds->bHiddenInGame = false;
 	CrystalHitbox->bHiddenInGame = false;
 #endif
 
@@ -71,6 +81,19 @@ void AIceCrystal::Tick(float DeltaTime)
 	{
 		Destroy();
 	}
+
+	// Rotate the crystal mesh in Relative Space
+	FRotator NewRotation = SMCrystal->GetRelativeRotation();
+	NewRotation.Yaw += RotationSpeed.Y * DeltaTime;
+	NewRotation.Roll += RotationSpeed.Z * DeltaTime;
+	SMCrystal->SetRelativeRotation(NewRotation);
+
+	// Move the crystal mesh up and down
+	FVector NewLocation = SMCrystal->GetRelativeLocation();
+	float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
+	NewLocation.Z += DeltaHeight * AlphaHeight; // Scale our height by a factor of AlphaHeight
+	RunningTime += DeltaTime;
+	SMCrystal->SetRelativeLocation(NewLocation);
 }
 
 void AIceCrystal::EventHit(UPrimitiveComponent* a_pOverlappedComponent, AActor* a_pOtherActor,
@@ -99,6 +122,9 @@ void AIceCrystal::EventHit(UPrimitiveComponent* a_pOverlappedComponent, AActor* 
 	{
 			//UE_LOG(LogTemp, Warning, TEXT("IceCrystal: Overlapped Component %s"), *a_pOverlappedComponent->GetName());
 			GetWorldTimerManager().SetTimer(ValueTimerHandle, this, &AIceCrystal::ReduceValue, 1.0f, true, ReductionDelay);
+
+			// Lock the crystal in place
+			CrystalMeshBounds->SetSimulatePhysics(false);
 	}
 }
 
