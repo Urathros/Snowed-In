@@ -45,7 +45,6 @@ AEnemy::AEnemy()
 	}
 	if (mat.Succeeded()) GetMesh()->SetMaterial(0, mat.Object);
 	if (mat.Succeeded()) GetMesh()->SetMaterial(1, mat.Object);
-	//else GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "NO MATERIAL");
 
 	auto controller = ConstructorHelpers::FClassFinder<AEnemyController>(*CONTROLLER_PATH);
 	if (controller.Succeeded()) AIControllerClass = AEnemyController::StaticClass();
