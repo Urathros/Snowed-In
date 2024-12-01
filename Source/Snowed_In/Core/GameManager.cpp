@@ -4,6 +4,7 @@
 #include "../Core/GameManager.h"
 #include "Enemy/EnemySpawner.h"
 #include <Kismet/GameplayStatics.h>
+#include "../Environment/CalendarSystem.h"
 #include "GameManager.h"
 
 auto UGameManager::GetGameInstance(const UObject& a_target) -> UGameInstance* const
@@ -43,7 +44,7 @@ auto UGameManager::ConvertPosToGrid(const FVector& a_pos) -> const FVector
 	convertedPos.X = a_pos.X - ((int32)a_pos.X % GridSize);
 	convertedPos.Y = a_pos.Y - ((int32)a_pos.Y % GridSize);
 
-	convertedPos += FVector(GridSize, GridSize, 0.f) * 0.5f;
+	//convertedPos += FVector(GridSize, GridSize, 0.f) * 0.5f;
 
 	return convertedPos;
 }
@@ -179,6 +180,8 @@ auto UGameManager::SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&
 	// Starting next Wave if exiting Build Mode
 	if (bInBuildMode == false && EnemySpawner) EnemySpawner->StartNextWave();
 
+	CalendarSystem->ForwardTime();
+
 	return *this;
 }
 
@@ -201,5 +204,12 @@ auto UGameManager::GetCalendarSystem(void) -> ACalendarSystem*
 auto UGameManager::SetCalendarSystem(ACalendarSystem* a_Calendar) -> UGameManager&
 {
 	CalendarSystem = a_Calendar;
+	return *this;
+}
+
+auto UGameManager::InvokeGameOver(void) -> UGameManager&
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "GAME OVER");
+	HandleGameOverDelegate.ExecuteIfBound();
 	return *this;
 }

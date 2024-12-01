@@ -101,6 +101,9 @@ private:
 	bool DoUpgrade = false;
 
 	UPROPERTY(EditAnywhere, Category = "Stats")
+	int32 StartLvl = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Stats")
 	int EnemiesInRangeCounter = 0;
 	FTimerHandle AttackTimerHandle = {};
 

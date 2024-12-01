@@ -11,6 +11,7 @@ DECLARE_DELEGATE(FHandleWaveClearedSignature);
 DECLARE_DELEGATE(FHandleWaveChangedSignature);
 DECLARE_DELEGATE(FHandleInBuildChangedSignature);
 DECLARE_DELEGATE(FHandleHUDCreationSignature);
+DECLARE_DELEGATE(FHandleGameOverSignature);
 
 class AEnemySpawner;
 class ACalendarSystem;
@@ -81,6 +82,8 @@ public:
 
 	auto GetCalendarSystem(void) -> ACalendarSystem*;
 	auto SetCalendarSystem(ACalendarSystem* a_Calendar) -> UGameManager&;
+
+	auto InvokeGameOver(void) -> UGameManager&;
 #pragma endregion
 	/*************************************************************************/
 private:
@@ -120,4 +123,5 @@ public:
 	FHandleWaveChangedSignature HandleWaveChangedDelegate = nullptr;
 	FHandleInBuildChangedSignature HandleInBuildChangedDelegate = nullptr;
 	FHandleHUDCreationSignature HandleHUDCreationDelegate = nullptr;
+	FHandleGameOverSignature HandleGameOverDelegate = nullptr;
 };

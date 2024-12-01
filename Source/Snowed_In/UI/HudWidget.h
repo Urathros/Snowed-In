@@ -145,9 +145,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Mouse Direction", Category = "Movement", AllowPrivateAccess = "true"))
 	FVector MouseDirection = FVector::Zero();
 
-	FVector LastPos = FVector::Zero();
-	FVector Dir = FVector::Zero();
-
 	FTimerHandle MoveBuildingHandle;
 
 	float Speed = 1.0f;

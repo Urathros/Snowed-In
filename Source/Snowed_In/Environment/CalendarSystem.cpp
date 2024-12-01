@@ -17,7 +17,7 @@ ACalendarSystem::ACalendarSystem()
 
 auto ACalendarSystem::ForwardTime(void) -> ACalendarSystem&
 {
-	GetWorld()->GetTimerManager().SetTimer(CalendarHandle, this, &ACalendarSystem::HandleTime, 1.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(CalendarHandle, this, &ACalendarSystem::HandleTime, 0.05f, true);
 	StartTime = LightSource->GetActorRotation().Euler().Y;
 	return *this;
 }

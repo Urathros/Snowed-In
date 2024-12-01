@@ -26,6 +26,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void TakeDamage(int dmg);
+
 private:
 	// Paths
 	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_LogCabin.SM_LogCabin'";
@@ -39,4 +41,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	USceneComponent* EnemyTarget = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	int HP = 500;
+
+	class UGameManager* GM = nullptr;
 };

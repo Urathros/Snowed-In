@@ -65,8 +65,7 @@ void ATower::BeginPlay()
 
 	if (AudioComponent) AudioComponent->Play();
 
-	//Activate();
-
+	CurrentLvl = StartLvl;
 	SetStats();
 }
 

@@ -2,6 +2,7 @@
 
 
 #include "Shed.h"
+#include "../Core/GameManager.h"
 
 // Sets default values
 AShed::AShed()
@@ -27,6 +28,7 @@ void AShed::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GM = UGameManager::Instantiate(*this);
 }
 
 // Called every frame
@@ -36,3 +38,11 @@ void AShed::Tick(float DeltaTime)
 
 }
 
+void AShed::TakeDamage(int dmg)
+{
+	HP = FMath::Clamp(HP - dmg, 0, HP);
+	if (HP == 0)
+	{
+		GM->InvokeGameOver();
+	}
+}
