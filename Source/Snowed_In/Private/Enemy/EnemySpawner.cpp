@@ -3,6 +3,7 @@
 #include "Enemy/EnemySpawner.h"
 #include "Enemy/Enemy.h"
 #include "../Core/GameManager.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemySpawner::AEnemySpawner()
@@ -17,7 +18,7 @@ void AEnemySpawner::BeginPlay()
 	Super::BeginPlay();
 
 	if (WaveData) MaxWaveCount = WaveData->GetRowMap().Num();
-	if (Enemies.Num() != 3) GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Enemies need to be three");
+	//if (Enemies.Num() != 3) GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Enemies need to be three");
 
 	GM = UGameManager::Instantiate(*this);
 	if (GM) GM->SetEnemySpawner(this);
@@ -43,6 +44,7 @@ void AEnemySpawner::StartNextWave(void)
 	if (CurrentWave > MaxWaveCount)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "You have defeated ALL waves");
+		UGameplayStatics::OpenLevel(GetWorld(), FName(TEXT("GameWon")));
 		return;
 	}
 
