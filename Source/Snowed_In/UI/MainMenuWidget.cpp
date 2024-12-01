@@ -7,7 +7,7 @@
 #include "CreditsWidget.h"
 #include "OptionsUserWidget.h"
 
-const FString UMainMenuWidget::GAME_LEVEL_NAME = FString(TEXT("Game"));
+const FString UMainMenuWidget::GAME_LEVEL_NAME = FString(TEXT("L_Map01"));
 const FString UMainMenuWidget::CREDITS_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_Credits'"));
 const FString UMainMenuWidget::OPTIONS_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_Options'"));
 

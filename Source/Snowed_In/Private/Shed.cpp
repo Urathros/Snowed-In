@@ -27,7 +27,7 @@ AShed::AShed()
 	EnemyTrigger->SetRelativeLocation(FVector(0, 0, 200));
 	EnemyTrigger->SetBoxExtent(FVector(600, 600, 400));
 	EnemyTrigger->SetCollisionProfileName(*ENEMY_TRIGGER_COLL_NAME);
-	EnemyTrigger->OnComponentBeginOverlap.AddDynamic(this, &AShed::OnBeginOverlap);
+	//EnemyTrigger->OnComponentBeginOverlap.AddDynamic(this, &AShed::OnBeginOverlap);
 	EnemyTrigger->SetupAttachment(MeshComp);
 }
 
@@ -56,12 +56,12 @@ void AShed::TakeDamage(int dmg)
 	}
 }
 
-void AShed::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, OtherActor->GetName());
-	if (auto enemy = Cast<AEnemy>(OtherActor); enemy)
-	{
-		TakeDamage(enemy->GetHealth());
-		enemy->Die();
-	}
-}
+//void AShed::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//{
+//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, OtherActor->GetName());
+//	if (auto enemy = Cast<AEnemy>(OtherActor); enemy)
+//	{
+//		TakeDamage(enemy->GetHealth());
+//		enemy->Die();
+//	}
+//}
