@@ -18,8 +18,8 @@ const FString UHudWidget::TIER1_TEXT = FString(TEXT("Bene"));
 const FString UHudWidget::TIER2_TEXT = FString(TEXT("Nepomuk"));
 const FString UHudWidget::TIER3_TEXT = FString(TEXT("Sepp"));
 const uint32 UHudWidget::TIER1_COST = 50;
-const uint32 UHudWidget::TIER2_COST = 500;
-const uint32 UHudWidget::TIER3_COST = 5000;
+const uint32 UHudWidget::TIER2_COST = 100;
+const uint32 UHudWidget::TIER3_COST = 200;
 
 UHudWidget::UHudWidget(const FObjectInitializer& ObjectInitializer)
 	: UUserWidget(ObjectInitializer) {}

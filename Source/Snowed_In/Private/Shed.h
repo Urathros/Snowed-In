@@ -32,7 +32,7 @@ public:
 private:
 	// Paths
 	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_LogCabin.SM_LogCabin'";
-	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
+	const FString MAT_PATH = "/Script/Engine.MaterialInstanceConstant'/Game/SnowedIn/Materials/MI_Shed.MI_Shed'";
 
 	const FString ENEMY_TRIGGER_COLL_NAME = "OverlapAllDynamic";
 
