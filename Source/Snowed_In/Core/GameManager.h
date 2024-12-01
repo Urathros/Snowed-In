@@ -119,6 +119,7 @@ private:
 
 public:
 	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedDelegate = nullptr;
+	FHandleIceCrystalsChangedSignature HandleIceCrystalsChangedPopupDelegate = nullptr;
 	FHandleWaveClearedSignature HandleWaveClearedDelegate = nullptr;
 	FHandleWaveChangedSignature HandleWaveChangedDelegate = nullptr;
 	FHandleInBuildChangedSignature HandleInBuildChangedDelegate = nullptr;

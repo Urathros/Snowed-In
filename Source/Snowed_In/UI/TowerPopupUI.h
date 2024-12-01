@@ -21,6 +21,9 @@ public:
 
 
 	UFUNCTION()
+	void HandleIceCrystalsChanged();
+
+	UFUNCTION()
 	void HandleUpdateButtonClicked();
 
 	UFUNCTION()
@@ -31,6 +34,11 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 private:
+	static const uint32 UPGRADE1_COST;
+	static const uint32 UPGRADE2_COST;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Game Manager", AllowPrivateAccess = "true"))
+	class UGameManager* GameManager = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* UpgradeBtn = nullptr;

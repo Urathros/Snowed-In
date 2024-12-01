@@ -115,6 +115,8 @@ void UHudWidget::OnLeftMouseClicked()
 					TowerPopupUI->SetVisibility(ESlateVisibility::Visible);
 					TowerPopupUI->SetPositionInViewport(FVector2D(x, y));
 					TowerPopupUI->SetCurrentBuilding(Cast<ATower>(actor));
+					TowerPopupUI->HandleIceCrystalsChanged();
+
 				}
 			}
 		}
