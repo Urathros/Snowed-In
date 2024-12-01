@@ -105,7 +105,7 @@ void UHudWidget::OnLeftMouseClicked()
 		auto result = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_WorldDynamic, false, hit);
 		if (result)
 		{
-			if (auto tower = Cast<ATower>(hit.GetActor()); tower)
+			if (const auto actor = hit.GetActor(); actor->IsA<ATower>())
 			{
 				float x, y;
 				if (!PlayerController->GetMousePosition(x, y)) return;
@@ -114,6 +114,7 @@ void UHudWidget::OnLeftMouseClicked()
 				{
 					TowerPopupUI->SetVisibility(ESlateVisibility::Visible);
 					TowerPopupUI->SetPositionInViewport(FVector2D(x, y));
+					TowerPopupUI->SetCurrentBuilding(Cast<ATower>(actor));
 				}
 			}
 		}
