@@ -67,6 +67,9 @@ void AEnemySpawner::SpawnEnemy(void)
 	}
 
 	auto enemyIdx = FMath::RandRange(0, rngRange);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString::Printf(TEXT("EnemyIdx: %d, rngRange: %d"), enemyIdx, rngRange));
+
 	if (enemyIdx == 1 && ToSpawn.LvlTwoCount <= 0) enemyIdx = 2;
 
 	auto spawnPointIdx = FMath::RandRange(0, FMath::Clamp(ToSpawn.UsedStartPointCount - 1, 0, 5));

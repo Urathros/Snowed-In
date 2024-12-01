@@ -2,6 +2,7 @@
 
 
 #include "Shed.h"
+#include "../Private/Enemy/Enemy.h"
 #include "../Core/GameManager.h"
 
 // Sets default values
@@ -21,6 +22,13 @@ AShed::AShed()
 	EnemyTarget = CreateDefaultSubobject<USceneComponent>("EnemyTarget");
 	EnemyTarget->SetRelativeLocation(EnemyTargetPos);
 	EnemyTarget->SetupAttachment(MeshComp);
+
+	EnemyTrigger = CreateDefaultSubobject<UBoxComponent>("EnemyTrigger");
+	EnemyTrigger->SetRelativeLocation(FVector(0, 0, 200));
+	EnemyTrigger->SetBoxExtent(FVector(600, 600, 400));
+	EnemyTrigger->SetCollisionProfileName(*ENEMY_TRIGGER_COLL_NAME);
+	EnemyTrigger->OnComponentBeginOverlap.AddDynamic(this, &AShed::OnBeginOverlap);
+	EnemyTrigger->SetupAttachment(MeshComp);
 }
 
 // Called when the game starts or when spawned
@@ -40,9 +48,20 @@ void AShed::Tick(float DeltaTime)
 
 void AShed::TakeDamage(int dmg)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::Printf(TEXT("Shed took %d damage"), dmg));
 	HP = FMath::Clamp(HP - dmg, 0, HP);
 	if (HP == 0)
 	{
 		GM->InvokeGameOver();
+	}
+}
+
+void AShed::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, OtherActor->GetName());
+	if (auto enemy = Cast<AEnemy>(OtherActor); enemy)
+	{
+		TakeDamage(enemy->GetHealth());
+		enemy->Die();
 	}
 }

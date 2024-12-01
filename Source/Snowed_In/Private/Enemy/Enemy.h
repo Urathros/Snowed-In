@@ -27,6 +27,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	bool TakeDamage(int32 Dmg);
+	int32 GetHealth(void);
+	void Die(void);
 
 private:
 	// Paths

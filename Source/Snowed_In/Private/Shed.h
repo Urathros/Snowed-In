@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "Shed.generated.h"
 
 UCLASS()
@@ -33,7 +34,11 @@ private:
 	const FString MESH_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/SM_LogCabin.SM_LogCabin'";
 	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
 
+	const FString ENEMY_TRIGGER_COLL_NAME = "OverlapAllDynamic";
+
 	const FVector EnemyTargetPos = FVector(-200, 0, 0);
+
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	// Components
 	UPROPERTY(EditAnywhere)
@@ -41,6 +46,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	USceneComponent* EnemyTarget = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* EnemyTrigger = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	int HP = 500;

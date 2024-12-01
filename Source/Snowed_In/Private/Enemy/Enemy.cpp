@@ -70,12 +70,22 @@ bool AEnemy::TakeDamage(int32 Dmg)
 	HP = FMath::Clamp(HP - Dmg, 0, HP);
 	if (HP == 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("%s died"), *GetName()));
-		//TODO: Add Particles and put Destroy on Delay (make mesh invisible instead)
-		Destroy();
-		if (GM) GM->DecrementEnemyCount();
+		Die();
 		return true;
 	}
 
 	return false;
+}
+
+int32 AEnemy::GetHealth(void)
+{
+	return HP;
+}
+
+void AEnemy::Die(void)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("%s died"), *GetName()));
+	//TODO: Add Particles and put Destroy on Delay (make mesh invisible instead)
+	Destroy();
+	if (GM) GM->DecrementEnemyCount();
 }
