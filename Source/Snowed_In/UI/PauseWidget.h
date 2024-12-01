@@ -4,24 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenuWidget.generated.h"
-
+#include "PauseWidget.generated.h"
 
 class UButton;
+
 /**
  * 
  */
 UCLASS()
-class SNOWED_IN_API UMainMenuWidget : public UUserWidget
+class SNOWED_IN_API UPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-
 public:
-	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);
+	UPauseWidget(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION()
-	void HandleGameStart();
+	void HandleGameResume();
 
 	UFUNCTION()
 	void HandleOptionsShowing();
@@ -30,26 +29,30 @@ public:
 	void HandleCreditsShowing();
 
 	UFUNCTION()
+	void HandleMainMenuShowing();
+
+	UFUNCTION()
 	void HandleGameExit();
 
 
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
-
 private:
-	static const FString GAME_LEVEL_NAME;
+	static const FString MENU_LEVEL_NAME;
 	static const FString CREDITS_PATH;
 	static const FString OPTIONS_PATH;
 
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonStart", BindWidget, AllowPrivateAccess = "true"))
-	TObjectPtr<UButton> ButtonStart = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonResume", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> ButtonResume = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonOptions", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonOptions = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonCredits", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonCredits = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonMenu", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> ButtonMenu = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonExit", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonExit = nullptr;
@@ -64,5 +67,4 @@ private:
 
 	class SNOWED_IN_API UCreditsWidget* CreditsWidget = nullptr;
 	class SNOWED_IN_API UOptionsUserWidget* OptionsWidget = nullptr;
-
 };

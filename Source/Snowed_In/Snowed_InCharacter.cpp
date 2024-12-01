@@ -15,12 +15,14 @@
 #include <Kismet/GameplayStatics.h>
 #include <EnhancedInputSubsystems.h>
 #include "InputMappingContext.h"
+#include "../Core/IngameHUD.h"
 
 const FString ASnowed_InCharacter::MAPPING_CTX_PATH = FString(TEXT("InputMappingContext'/Game/SnowedIn/Input/IMC_Pawn'"));
 const FString ASnowed_InCharacter::CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseClick'"));
 const FString ASnowed_InCharacter::CANCEL_CLICK_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_MouseCancel'"));
 const FString ASnowed_InCharacter::ROTATE_RIGHT_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_RotateRight'"));
 const FString ASnowed_InCharacter::ROTATE_LEFT_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_RotateLeft'"));
+const FString ASnowed_InCharacter::PAUSE_IA_PATH = FString(TEXT("InputAction'/Game/SnowedIn/Input/Actions/IA_Pause'"));
 
 ASnowed_InCharacter::ASnowed_InCharacter()
 {
@@ -59,6 +61,7 @@ ASnowed_InCharacter::ASnowed_InCharacter()
 	CancelClickInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*CANCEL_CLICK_IA_PATH).Object;
 	RightRotationInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*ROTATE_RIGHT_IA_PATH).Object;
 	LeftRotationInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*ROTATE_LEFT_IA_PATH).Object;
+	PauseInputAction = ConstructorHelpers::FObjectFinder<UInputAction>(*PAUSE_IA_PATH).Object;
 	MappingContext = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*MAPPING_CTX_PATH).Object;
 }
 
@@ -85,9 +88,17 @@ void ASnowed_InCharacter::HandleLeftRotation(const FInputActionInstance& Instanc
 	HandleLeftRotationDelegate.ExecuteIfBound();
 }
 
+void ASnowed_InCharacter::HandlePause(const FInputActionInstance& Instance)
+{
+	//UE_LOG(LogTemp, Display, TEXT("Pause"));
+	if (HUD) HUD->SetPause(!HUD->GetPause());
+}
+
 void ASnowed_InCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (const auto gameHUD = UGameplayStatics::GetPlayerController(this, 0)->GetHUD(); !HUD && gameHUD->IsA<AIngameHUD>()) HUD = Cast<AIngameHUD>(gameHUD);
 
 	if (auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
@@ -112,6 +123,8 @@ void ASnowed_InCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(CancelClickInputAction, ETriggerEvent::Triggered, this, &ASnowed_InCharacter::HandleMouseCanceled);
 		EnhancedInputComponent->BindAction(RightRotationInputAction, ETriggerEvent::Started, this, &ASnowed_InCharacter::HandleRightRotation);
 		EnhancedInputComponent->BindAction(LeftRotationInputAction, ETriggerEvent::Started, this, &ASnowed_InCharacter::HandleLeftRotation);
+		EnhancedInputComponent->BindAction(PauseInputAction, ETriggerEvent::Completed, this, &ASnowed_InCharacter::HandlePause);
+
 	}
 	else
 	{

@@ -24,6 +24,7 @@ public:
 	void HandleMouseCanceled(const struct FInputActionInstance& Instance);
 	void HandleRightRotation(const struct FInputActionInstance& Instance);
 	void HandleLeftRotation(const struct FInputActionInstance& Instance);
+	void HandlePause(const struct FInputActionInstance& Instance);
 
 	virtual void BeginPlay() override;
 
@@ -44,6 +45,12 @@ private:
 	static const FString CANCEL_CLICK_IA_PATH;
 	static const FString ROTATE_RIGHT_IA_PATH;
 	static const FString ROTATE_LEFT_IA_PATH;
+	static const FString PAUSE_IA_PATH;
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "HUD", AllowPrivateAccess = "true"))
+	class AIngameHUD* HUD = nullptr;
 
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true", MakeEditWidget = true))
@@ -73,6 +80,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		class UInputAction* LeftRotationInputAction;
+
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		class UInputAction* PauseInputAction;
 
 public:
 	FHandleMouseClickedSignature HandleMouseClickedDelegate = nullptr;

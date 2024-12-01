@@ -7,6 +7,7 @@
 #include "CreditsWidget.h"
 #include "OptionsUserWidget.h"
 
+const FString UMainMenuWidget::GAME_LEVEL_NAME = FString(TEXT("Game"));
 const FString UMainMenuWidget::CREDITS_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_Credits'"));
 const FString UMainMenuWidget::OPTIONS_PATH = FString(TEXT("WidgetBlueprint'/Game/SnowedIn/Blueprints/UI/WBP_Options'"));
 
@@ -20,23 +21,17 @@ UMainMenuWidget::UMainMenuWidget(const FObjectInitializer& ObjectInitializer)
 
 void UMainMenuWidget::HandleGameStart()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), "Game");
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*GAME_LEVEL_NAME));
 }
 
 void UMainMenuWidget::HandleOptionsShowing()
 {
-	if (OptionsWidget)
-	{
-		OptionsWidget->AddToViewport();
-	}
+	if (OptionsWidget) OptionsWidget->AddToViewport();
 }
 
 void UMainMenuWidget::HandleCreditsShowing()
 {
-	if (CreditsWidget)
-	{
-		CreditsWidget->AddToViewport();
-	}
+	if (CreditsWidget) CreditsWidget->AddToViewport();
 }
 
 void UMainMenuWidget::HandleGameExit()
