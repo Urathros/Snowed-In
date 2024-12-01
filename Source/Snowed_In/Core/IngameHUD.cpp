@@ -29,6 +29,7 @@ void AIngameHUD::BeginPlay()
     PlayerController->bEnableMouseOverEvents = true;
 
     GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
+    GameManager->HandleWaveClearedDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
 
     if (HudClass)
     {
@@ -36,7 +37,5 @@ void AIngameHUD::BeginPlay()
         {
             HudWidget->AddToViewport();
         }
-        
-
     }
 }

@@ -12,7 +12,7 @@ class UTextBlock;
 class UButton;
 
 /**
- * 
+ *
  */
 UCLASS()
 class SNOWED_IN_API UHudWidget : public UUserWidget
@@ -26,7 +26,7 @@ public:
 	void HandleIceCrystalsChanged();
 
 	UFUNCTION()
-	void HandleButtonBuyTier1Clicked(); 
+	void HandleButtonBuyTier1Clicked();
 
 
 	UFUNCTION()
@@ -40,7 +40,7 @@ public:
 	void HandleButtonBuyTier3Clicked();
 
 	UFUNCTION()
-	void HandleMoveableDisabling();
+	void OnLeftMouseClicked();
 
 	UFUNCTION()
 	void HandleBuildingMovement();
@@ -77,64 +77,67 @@ private:
 	class ASnowed_InCharacter* Character = nullptr;
 
 	/*************************************************************************/
-	#pragma region GUIElements
-	/*************************************************************************/
+#pragma region GUIElements
+/*************************************************************************/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageIceCrystals", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UImage> ImageIceCrystals = nullptr;
+	TObjectPtr<UImage> ImageIceCrystals = nullptr;
 
-		
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockIceCrystals", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockIceCrystals = nullptr;
+	TObjectPtr<UTextBlock> TextBlockIceCrystals = nullptr;
 
-		
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonCancel", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UButton> ButtonCancel = nullptr;
-		
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockCancel", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockCancel = nullptr;
+	TObjectPtr<UButton> ButtonCancel = nullptr;
 
-		
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockCancel", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> TextBlockCancel = nullptr;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier1", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockNameTier1 = nullptr;
+	TObjectPtr<UTextBlock> TextBlockNameTier1 = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageTier1", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UImage> ImageTier1 = nullptr;
+	TObjectPtr<UImage> ImageTier1 = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonBuyTier1", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UButton> ButtonBuyTier1 = nullptr;
-		
+	TObjectPtr<UButton> ButtonBuyTier1 = nullptr;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier1", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockBuyTier1 = nullptr;
+	TObjectPtr<UTextBlock> TextBlockBuyTier1 = nullptr;
 
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier2", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockNameTier2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier2", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> TextBlockNameTier2 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageTier2", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UImage> ImageTier2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageTier2", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UImage> ImageTier2 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonBuyTier2", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UButton> ButtonBuyTier2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonBuyTier2", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> ButtonBuyTier2 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier2", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockBuyTier2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier2", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> TextBlockBuyTier2 = nullptr;
 
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier3", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockNameTier3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockNameTier3", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> TextBlockNameTier3 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageTier3", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UImage> ImageTier3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ImageTier3", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UImage> ImageTier3 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonBuyTier3", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UButton> ButtonBuyTier3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonBuyTier3", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UButton> ButtonBuyTier3 = nullptr;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier3", BindWidget, AllowPrivateAccess = "true"))
-		TObjectPtr<UTextBlock> TextBlockBuyTier3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TextBlockBuyTier3", BindWidget, AllowPrivateAccess = "true"))
+	TObjectPtr<UTextBlock> TextBlockBuyTier3 = nullptr;
 
-	#pragma endregion
+	UPROPERTY(meta = (BindWidget))
+	class UTowerPopupUI* TowerPopupUI = nullptr;
+
+#pragma endregion
 	/*************************************************************************/
 
 	class ATower* CurrentBuilding = nullptr;
@@ -148,4 +151,5 @@ private:
 	FTimerHandle MoveBuildingHandle;
 
 	float Speed = 1.0f;
+
 };

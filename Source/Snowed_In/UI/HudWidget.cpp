@@ -10,9 +10,10 @@
 #include <../Buildings/Tower.h>
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "../UI/TowerPopupUI.h"
 #include "../Environment/CalendarSystem.h"
 
-const FString UHudWidget::CANCEL_TEXT = FString(TEXT("Cancel"));
+const FString UHudWidget::CANCEL_TEXT = FString(TEXT("Start Wave"));
 const FString UHudWidget::TIER1_TEXT = FString(TEXT("Tier 1"));
 const FString UHudWidget::TIER2_TEXT = FString(TEXT("Tier 2"));
 const FString UHudWidget::TIER3_TEXT = FString(TEXT("Tier 3"));
@@ -54,7 +55,7 @@ void UHudWidget::HandleButtonBuyTier1Clicked()
 	if (Character)
 	{
 		Character->HandleMouseClickedDelegate.Unbind();
-		Character->HandleMouseClickedDelegate.BindUObject(this, &UHudWidget::HandleMoveableDisabling);
+		Character->HandleMouseClickedDelegate.BindUObject(this, &UHudWidget::OnLeftMouseClicked);
 		Character->HandleMouseCanceledDelegate.Unbind();
 		Character->HandleMouseCanceledDelegate.BindUObject(this, &UHudWidget::HandleBuildingAbort);
 		Character->HandleRightRotationDelegate.Unbind();
@@ -77,7 +78,6 @@ void UHudWidget::HandleCancelButtonClicked()
 {
 	if (!GameManager) return;
 	GameManager->SetInBuildMode(false);
-	if (const auto calendar = GameManager->GetCalendarSystem()) calendar->ForwardTime();
 	RemoveFromParent();
 }
 
@@ -86,16 +86,38 @@ void UHudWidget::HandleButtonBuyTier3Clicked()
 	UE_LOG(LogTemp, Display, TEXT("Button Buy Tier 3 Clicked!"));
 }
 
-void UHudWidget::HandleMoveableDisabling()
+void UHudWidget::OnLeftMouseClicked()
 {
 	if (!GameManager) return;
 
-	GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
-	GameManager->SubstractIceCrystals(TIER1_COST);
-	if (ButtonBuyTier1 && (GameManager->GetIceCrystals() >= TIER1_COST)) ButtonBuyTier1->SetIsEnabled(true);
-	Character->HandleMouseCanceledDelegate.Unbind();
-	CurrentBuilding->Activate();
+	if (CurrentBuilding)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(MoveBuildingHandle);
+		GameManager->SubstractIceCrystals(TIER1_COST);
+		if (ButtonBuyTier1 && (GameManager->GetIceCrystals() >= TIER1_COST)) ButtonBuyTier1->SetIsEnabled(true);
+		Character->HandleMouseCanceledDelegate.Unbind();
+		CurrentBuilding->Activate();
+		CurrentBuilding = nullptr;
+	}
+	else
+	{
+		FHitResult hit = {};
+		auto result = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_WorldDynamic, false, hit);
+		if (result)
+		{
+			if (auto tower = Cast<ATower>(hit.GetActor()); tower)
+			{
+				float x, y;
+				if (!PlayerController->GetMousePosition(x, y)) return;
 
+				if (TowerPopupUI)
+				{
+					TowerPopupUI->SetVisibility(ESlateVisibility::Visible);
+					TowerPopupUI->SetPositionInViewport(FVector2D(x, y));
+				}
+			}
+		}
+	}
 }
 
 void UHudWidget::HandleBuildingMovement()
@@ -138,6 +160,8 @@ void UHudWidget::NativeConstruct()
 	if (Character = PlayerController->GetPawn<ASnowed_InCharacter>(); !Character) return;
 
 	if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
+
+	if (TowerPopupUI) TowerPopupUI->SetVisibility(ESlateVisibility::Hidden);
 
 	GameManager->HandleIceCrystalsChangedDelegate.BindUObject(this, &UHudWidget::HandleIceCrystalsChanged);
 	const auto&& iceCrystals = GameManager->GetIceCrystals();

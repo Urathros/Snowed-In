@@ -21,8 +21,6 @@ void AEnemySpawner::BeginPlay()
 
 	GM = UGameManager::Instantiate(*this);
 	if (GM) GM->SetEnemySpawner(this);
-
-	StartNextWave();
 }
 
 // Called every frame
