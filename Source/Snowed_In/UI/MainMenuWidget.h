@@ -38,6 +38,7 @@ public:
 
 private:
 	static const FString CREDITS_PATH;
+	static const FString OPTIONS_PATH;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonStart", BindWidget, AllowPrivateAccess = "true"))
@@ -57,5 +58,10 @@ private:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Credits Class", Category = "GUI", AllowPrivateAccess = "true"))
 	TSubclassOf<class UUserWidget> CreditsClass = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Options Class", Category = "GUI", AllowPrivateAccess = "true"))
+	TSubclassOf<class UUserWidget> OptionsClass = nullptr;
+
 	class SNOWED_IN_API UCreditsWidget* CreditsWidget = nullptr;
+	class SNOWED_IN_API UOptionsUserWidget* OptionsWidget = nullptr;
+
 };

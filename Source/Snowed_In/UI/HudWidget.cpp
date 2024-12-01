@@ -14,9 +14,9 @@
 #include "../Environment/CalendarSystem.h"
 
 const FString UHudWidget::CANCEL_TEXT = FString(TEXT("Start Wave"));
-const FString UHudWidget::TIER1_TEXT = FString(TEXT("Tier 1"));
-const FString UHudWidget::TIER2_TEXT = FString(TEXT("Tier 2"));
-const FString UHudWidget::TIER3_TEXT = FString(TEXT("Tier 3"));
+const FString UHudWidget::TIER1_TEXT = FString(TEXT("Bene"));
+const FString UHudWidget::TIER2_TEXT = FString(TEXT("Nepomuk"));
+const FString UHudWidget::TIER3_TEXT = FString(TEXT("Sepp"));
 const uint32 UHudWidget::TIER1_COST = 50;
 const uint32 UHudWidget::TIER2_COST = 500;
 const uint32 UHudWidget::TIER3_COST = 5000;

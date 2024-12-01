@@ -22,6 +22,10 @@ private:
 
 	static const FString WIDGET_PATH;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "Player Controller", AllowPrivateAccess = "true"))
+	APlayerController* PlayerController = nullptr;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Menu Class", Category = "GUI", AllowPrivateAccess = "true"))
 	TSubclassOf<class UUserWidget> MenuClass = nullptr;
 

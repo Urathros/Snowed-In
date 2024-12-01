@@ -14,6 +14,13 @@ AMainMenuHUD::AMainMenuHUD()
 
 void AMainMenuHUD::BeginPlay()
 {
+    if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
+
+    PlayerController->bShowMouseCursor = true;
+    PlayerController->bEnableClickEvents = true;
+    PlayerController->bEnableMouseOverEvents = true;
+
+
     if (MenuClass)
     {
         if (MenuWidget = CreateWidget<UMainMenuWidget>(GetWorld(), MenuClass); MenuWidget)
