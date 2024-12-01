@@ -32,8 +32,13 @@ public:
 
 private:
 	// Paths
-	const FString MESH_PATH = "/Script/Engine.SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple.SKM_Manny_Simple'";
-	const FString MAT_PATH = "/Script/Engine.Material'/Game/Characters/Mannequins/Materials/M_Mannequin.M_Mannequin'";
+	const FString MESH_ONE_PATH = "/Script/Engine.SkeletalMesh'/Game/SnowedIn/Meshes/Enemies/buttnmandl.buttnmandl'";
+	const FString MESH_TWO_PATH = "/Script/Engine.SkeletalMesh'/Game/SnowedIn/Meshes/Enemies/SKM_Witch_Edeltraud.SKM_Witch_Edeltraud'";
+	const FString MESH_THREE_PATH = "/Script/Engine.SkeletalMesh'/Game/SnowedIn/Meshes/Enemies/SMK_Krampus.SMK_Krampus'";
+
+	const FString MAT_ONE_PATH = "MaterialInstanceConstant'/Game/SnowedIn/Materials/MI_Buttnmandl'";
+	const FString MAT_TWO_PATH = "/Script/Engine.Material'/Game/Characters/Mannequins/Materials/M_Mannequin.M_Mannequin'";
+	const FString MAT_THREE_PATH = "/Script/Engine.MaterialInstanceConstant'/Game/SnowedIn/Materials/MI_Krampus.MI_Krampus'";
 	const FString CONTROLLER_PATH = "/Script/CoreUObject.Class'/Script/Snowed_In.EnemyController'";
 
 	const float MOVE_SPEED = 200.0f;

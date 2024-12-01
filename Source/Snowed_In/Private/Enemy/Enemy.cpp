@@ -14,15 +14,38 @@ AEnemy::AEnemy()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	auto mesh = ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH);
-	auto mat = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH);
+	FString meshPath = "";
+	FString matPath = "";
+
+	auto rng = FMath::RandRange((int64)0, (int64)2);
+	if (rng == 0)
+	{
+		meshPath = MESH_ONE_PATH;
+		matPath = MAT_ONE_PATH;
+	}
+	else if (rng == 1)
+	{
+		meshPath = MESH_TWO_PATH;
+		matPath = MAT_TWO_PATH;
+	}
+	else
+	{
+		meshPath = MESH_THREE_PATH;
+		matPath = MAT_THREE_PATH;
+	}
+
+	auto mesh = ConstructorHelpers::FObjectFinder<USkeletalMesh>(*meshPath);
+	auto mat = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*matPath);
 
 	if (mesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(mesh.Object);
 		GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
+		GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 	}
 	if (mat.Succeeded()) GetMesh()->SetMaterial(0, mat.Object);
+	if (mat.Succeeded()) GetMesh()->SetMaterial(1, mat.Object);
+	//else GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "NO MATERIAL");
 
 	auto controller = ConstructorHelpers::FClassFinder<AEnemyController>(*CONTROLLER_PATH);
 	if (controller.Succeeded()) AIControllerClass = AEnemyController::StaticClass();

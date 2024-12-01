@@ -35,7 +35,7 @@ private:
 	const FString MESH_LVL1_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_SnowMan_Bene_Lvl1.SMK_Snowman_Gang_GameJam_SnowMan_Bene_Lvl1'";
 	const FString MESH_LVL2_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_SnowMan_Nepomuk_Lvl2.SMK_Snowman_Gang_GameJam_SnowMan_Nepomuk_Lvl2'";
 	const FString MESH_LVL3_PATH = "/Script/Engine.StaticMesh'/Game/SnowedIn/Meshes/Towers/SMK_Snowman_Gang_GameJam_Snowman_Sepp_Lvl3.SMK_Snowman_Gang_GameJam_Snowman_Sepp_Lvl3'";
-	const FString MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
+	const FString MAT_PATH = "/Script/Engine.MaterialInstanceConstant'/Game/SnowedIn/Materials/MI_Snowman_Gang.MI_Snowman_Gang'";
 
 	const FString TOWER_LVL1_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlOne.MS_TowerLvlOne'";
 	const FString TOWER_LVL2_SFX_PATH = "/Script/MetasoundEngine.MetaSoundSource'/Game/SnowedIn/Audio/MetaSounds/MS_TowerLvlTwo.MS_TowerLvlTwo'";
