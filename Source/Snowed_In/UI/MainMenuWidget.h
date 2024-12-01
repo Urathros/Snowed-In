@@ -37,6 +37,9 @@ public:
 	virtual void NativeDestruct() override;
 
 private:
+	static const FString CREDITS_PATH;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonStart", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonStart = nullptr;
 
@@ -48,4 +51,11 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ButtonExit", BindWidget, AllowPrivateAccess = "true"))
 	TObjectPtr<UButton> ButtonExit = nullptr;
+
+
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Credits Class", Category = "GUI", AllowPrivateAccess = "true"))
+	TSubclassOf<class UUserWidget> CreditsClass = nullptr;
+
+	class SNOWED_IN_API UCreditsWidget* CreditsWidget = nullptr;
 };

@@ -22,7 +22,7 @@ private:
 
 	static const FString WIDGET_PATH;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Hud Class", Category = "GUI", AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (DisplayName = "Menu Class", Category = "GUI", AllowPrivateAccess = "true"))
 	TSubclassOf<class UUserWidget> MenuClass = nullptr;
 
 	class SNOWED_IN_API UMainMenuWidget* MenuWidget = nullptr;
