@@ -191,7 +191,7 @@ void UHudWidget::NativeConstruct()
 	if (ButtonCancel) ButtonCancel->OnClicked.AddDynamic(this, &UHudWidget::HandleCancelButtonClicked);
 	if (TextBlockCancel) TextBlockCancel->SetText(FText::FromString(CANCEL_TEXT));
 
-	GameManager->SetIceCrystals(55); //Test
+	GameManager->SetIceCrystals(75); // Start Money
 }
 
 void UHudWidget::NativeDestruct()

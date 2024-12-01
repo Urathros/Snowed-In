@@ -180,7 +180,7 @@ auto UGameManager::SetInBuildMode(const bool& a_bInBuildMode) -> UGameManager&
 	// Starting next Wave if exiting Build Mode
 	if (bInBuildMode == false && EnemySpawner) EnemySpawner->StartNextWave();
 
-	if(CalendarSystem) CalendarSystem->ForwardTime();
+	//if(CalendarSystem) CalendarSystem->ForwardTime();
 
 	return *this;
 }

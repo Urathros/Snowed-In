@@ -43,7 +43,7 @@ void AIngameHUD::BeginPlay()
     PlayerController->bEnableClickEvents = true;
     PlayerController->bEnableMouseOverEvents = true;
 
-    GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
+    //GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
     GameManager->HandleWaveClearedDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
 
     if (HudClass)

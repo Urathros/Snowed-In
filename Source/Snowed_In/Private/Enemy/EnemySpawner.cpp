@@ -53,12 +53,7 @@ void AEnemySpawner::StartNextWave(void)
 
 void AEnemySpawner::SpawnEnemy(void)
 {
-	int rngRange = 0;
-	if (ToSpawn.LvlOneCount > 0) rngRange++;
-	if (ToSpawn.LvlTwoCount > 0) rngRange++;
-	if (ToSpawn.LvlThreeCount > 0) rngRange++;
-
-	if (rngRange == 0)
+	if (ToSpawn.LvlOneCount <= 0)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, "Wave Spawn Done");
 		GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
@@ -66,37 +61,53 @@ void AEnemySpawner::SpawnEnemy(void)
 		return;
 	}
 
-	auto enemyIdx = FMath::RandRange(0, rngRange);
+	auto enemy = GetWorld()->SpawnActor<AEnemy>(Enemies[0], SpawnPoints[0]->GetActorLocation(), SpawnPoints[0]->GetActorRotation());
+	ToSpawn.LvlOneCount--;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString::Printf(TEXT("EnemyIdx: %d, rngRange: %d"), enemyIdx, rngRange));
+	//int rngRange = 0;
+	//if (ToSpawn.LvlOneCount > 0) rngRange++;
+	//if (ToSpawn.LvlTwoCount > 0) rngRange++;
+	//if (ToSpawn.LvlThreeCount > 0) rngRange++;
 
-	if (enemyIdx == 1 && ToSpawn.LvlTwoCount <= 0) enemyIdx = 2;
+	//if (rngRange == 0)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, "Wave Spawn Done");
+	//	GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
+	//	if (GM) GM->SetWaveSpawnInProgress(false);
+	//	return;
+	//}
 
-	auto spawnPointIdx = FMath::RandRange(0, FMath::Clamp(ToSpawn.UsedStartPointCount - 1, 0, 5));
-	auto spawnPoint = SpawnPoints[spawnPointIdx];
+	//auto enemyIdx = FMath::RandRange(0, FMath::Max(rngRange - 1, 0));
 
-	auto enemy = GetWorld()->SpawnActor<AEnemy>(Enemies[enemyIdx], spawnPoint->GetActorLocation(), spawnPoint->GetActorRotation());
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString::Printf(TEXT("EnemyIdx: %d, rngRange: %d"), enemyIdx, rngRange));
 
-	switch (rngRange)
-	{
-	case 1:
-		ToSpawn.LvlOneCount--;
-		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("1 rmv => %d"), ToSpawn.LvlOneCount));
-		break;
+	//if (enemyIdx == 1 && ToSpawn.LvlTwoCount <= 0) enemyIdx = 2;
 
-	case 2:
-		ToSpawn.LvlTwoCount--;
-		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("2 rmv => %d"), ToSpawn.LvlTwoCount));
-		break;
+	//auto spawnPointIdx = FMath::RandRange(0, FMath::Max(ToSpawn.UsedStartPointCount - 1, 0));
+	//auto spawnPoint = SpawnPoints[spawnPointIdx];
 
-	case 3:
-		ToSpawn.LvlThreeCount--;
-		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("3 rmv => %d"), ToSpawn.LvlThreeCount));
-		break;
+	//auto enemy = GetWorld()->SpawnActor<AEnemy>(Enemies[enemyIdx], spawnPoint->GetActorLocation(), spawnPoint->GetActorRotation());
 
-	default:
-		break;
-	}
+	//switch (rngRange)
+	//{
+	//case 1:
+	//	ToSpawn.LvlOneCount--;
+	//	//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("1 rmv => %d"), ToSpawn.LvlOneCount));
+	//	break;
+
+	//case 2:
+	//	ToSpawn.LvlTwoCount--;
+	//	//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("2 rmv => %d"), ToSpawn.LvlTwoCount));
+	//	break;
+
+	//case 3:
+	//	ToSpawn.LvlThreeCount--;
+	//	//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, FString::Printf(TEXT("3 rmv => %d"), ToSpawn.LvlThreeCount));
+	//	break;
+
+	//default:
+	//	break;
+	//}
 }
 
 FWaveData* AEnemySpawner::GetWaveDataRow(int32 a_idx)
