@@ -13,53 +13,53 @@ const FString AIngameHUD::PAUSE_PATH = FString(TEXT("WidgetBlueprint'/Game/Snowe
 
 AIngameHUD::AIngameHUD()
 {
-    HudClass = ConstructorHelpers::FClassFinder<UUserWidget>(*WIDGET_PATH).Class;
-    PauseClass = ConstructorHelpers::FClassFinder<UUserWidget>(*PAUSE_PATH).Class;
+	HudClass = ConstructorHelpers::FClassFinder<UUserWidget>(*WIDGET_PATH).Class;
+	PauseClass = ConstructorHelpers::FClassFinder<UUserWidget>(*PAUSE_PATH).Class;
 }
 
 void AIngameHUD::HandleHudWidgetCreation()
 {
-    if (HudWidget) HudWidget->AddToViewport();
+	if (HudWidget) HudWidget->AddToViewport();
 }
 
 auto AIngameHUD::GetPause(void) const -> const bool
 {
-    return bPause;
+	return bPause;
 }
 
 auto AIngameHUD::SetPause(const bool& a_bPause) -> AIngameHUD&
 {
-    bPause = a_bPause;
-    bPause ? PauseWidget->AddToViewport() : PauseWidget->RemoveFromParent();
-    return *this;
+	bPause = a_bPause;
+	bPause ? PauseWidget->AddToViewport() : PauseWidget->RemoveFromParent();
+	return *this;
 }
 
 void AIngameHUD::BeginPlay()
 {
-    if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
-    if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
+	if (GameManager = UGameManager::Instantiate(*this); !GameManager) return;
+	if (PlayerController = GetWorld()->GetFirstPlayerController(); !PlayerController) return;
 
-    PlayerController->bShowMouseCursor = true;
-    PlayerController->bEnableClickEvents = true;
-    PlayerController->bEnableMouseOverEvents = true;
+	PlayerController->bShowMouseCursor = true;
+	PlayerController->bEnableClickEvents = true;
+	PlayerController->bEnableMouseOverEvents = true;
 
-    //GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
-    GameManager->HandleWaveClearedDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
+	//GameManager->HandleHUDCreationDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
+	GameManager->HandleWaveClearedDelegate.BindUObject(this, &AIngameHUD::HandleHudWidgetCreation);
 
-    if (HudClass)
-    {
-        if (HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudClass); HudWidget)
-        {
-            HudWidget->AddToViewport();
-        }
-    }
+	if (HudClass)
+	{
+		if (HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudClass); HudWidget)
+		{
+			HudWidget->AddToViewport();
+		}
+	}
 
 
-    if (PauseClass)
-    {
-        if (PauseWidget = CreateWidget<UPauseWidget>(GetWorld(), PauseClass); PauseWidget)
-        {
-            //PauseWidget->AddToViewport();
-        }
-    }
+	if (PauseClass)
+	{
+		if (PauseWidget = CreateWidget<UPauseWidget>(GetWorld(), PauseClass); PauseWidget)
+		{
+			//PauseWidget->AddToViewport();
+		}
+	}
 }
