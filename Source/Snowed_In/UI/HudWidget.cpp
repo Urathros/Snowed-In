@@ -205,6 +205,11 @@ void UHudWidget::NativeDestruct()
 {
 	Super::NativeDestruct();
 
+	if (ButtonCancel) ButtonCancel->OnClicked.Clear();
+	if (ButtonBuyTier3) ButtonBuyTier3->OnClicked.Clear();
+	if (ButtonBuyTier2) ButtonBuyTier2->OnClicked.Clear();
+	if (ButtonBuyTier1) ButtonBuyTier1->OnClicked.Clear();
+
 	if (!GameManager) return;
 	GameManager->HandleIceCrystalsChangedDelegate.Unbind();
 }

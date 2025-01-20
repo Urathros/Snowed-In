@@ -82,4 +82,6 @@ void UTowerPopupUI::NativeConstruct()
 
 void UTowerPopupUI::NativeDestruct()
 {
+	if (DestroyBtn) DestroyBtn->OnClicked.RemoveAll(this);
+	if (UpgradeBtn) UpgradeBtn->OnClicked.RemoveAll(this);
 }

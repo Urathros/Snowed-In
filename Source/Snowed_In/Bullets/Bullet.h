@@ -40,8 +40,8 @@ private:
 	const FString DEFAULT_MESH_PATH = "/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'";
 	const FString CARROT_MESH_PATH = "/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'";
 
-	const FString DEFAULT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
-	const FString CARROT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial'";
+	const FString DEFAULT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial'";
+	const FString CARROT_MAT_PATH = "/Script/Engine.Material'/Engine/EngineMaterials/WorldGridMaterial'";
 
 	const FString PARTICLES_PATH = "/Script/Niagara.NiagaraSystem'/Game/SnowedIn/Particles/NS_Shot.NS_Shot'";
 
